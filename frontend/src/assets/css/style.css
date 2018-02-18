@@ -4,8 +4,13 @@ html{
 body{
 	font-size: 1em;
 	-webkit-font-smoothing: antialiased;
+
 }
 * {
+	/*font-family: 'Crimson Text', serif;*/
+	/*font-family: 'Ubuntu', sans-serif;*/
+	/*font-family: 'Arimo', sans-serif;*/
+	font-family: 'Muli', sans-serif;
 	letter-spacing: 1px;
 }
 h1,h2,h3,h4,h5,h6{
@@ -69,12 +74,27 @@ p{
 	color: red;
 	font-size: 0.9em;
 }
+.min-95 {
+	min-height: 95vh;
+}
 
 /*colors*/
 .blue {
 	color: #4A2AD5;
 }
-
+.yellow {
+	color: #F8C030;
+}
+.black {
+	color: black;
+}
+.bg-blue {
+	background-color: #5600CD;
+}
+.bg-grey {
+	/*background-color: #E7E5DF;*/
+	background-color: #FAFAF9;
+}
 /*headings*/
 .sub-head {
 	/*font-weight: bold;*/

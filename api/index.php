@@ -83,7 +83,11 @@ $app->post('/contacts', function (Request $request, Response $response) {
     $key2="";
     $signature = hash_hmac('SHA256',"$key,$id",$key2);
 
-    $data = array('token' => $signature ,'contacts' => $contacts );
+    $data = array(
+      'status' => 'success', 
+      'token' => $signature, 
+      'contacts' => $contacts
+     );
     echo json_encode($data);
   } catch(PDOException $e) {
   //     //error_log($e->getMessage(), 3, '/var/tmp/php.log');

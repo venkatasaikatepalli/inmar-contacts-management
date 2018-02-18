@@ -4,6 +4,7 @@ import Welcome from '@/components/Welcome'
 import Login from '@/components/Login'
 import SignUp from '@/components/SignUp'
 import Dashboard from '@/components/Dashboard'
+import Contacts from '@/components/Contacts'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/contacts',
+      name: 'Contacts',
+      component: Contacts
     }
   ]
 })
