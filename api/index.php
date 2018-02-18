@@ -22,7 +22,6 @@ $app->get('/welcome', function() {
 // signup
 
 $app->post('/signup', function($request){
-
    $input = $request->getParsedBody();
    $firstname = $input['firstname'];
    $lastname = $input['lastname'];
@@ -37,10 +36,8 @@ $app->post('/signup', function($request){
      if($stmt = $db->query($sql)==true)
      {
       $data = array('status' => 'success', 'message' => 'Registered Sucessfully, You can Login Now');
-      
      }else
       $data = array('status' => 'failed', 'message' => 'Failed Try Again');
-
      $db = null;
      echo json_encode($data);
    } catch(PDOException $e) {
@@ -48,6 +45,27 @@ $app->post('/signup', function($request){
    }
 });
 
+$app->post('/login',function($request,$response){
+  $input = $request->getParsedBody();
+  $email = $input['email'];
+  $password = $input['password'];
+  $sql = "SELECT * FROM `users` where email='$email' and password='$password'";
+  try {
+    $db = getDB();
+    $stmt = $db->query($sql);  
+    $users = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    $users = $users[0];
+    $data = array(
+      'status' => 'success', 
+      'token' => 'token', 
+      'userdetails' => $users
+      );
+    echo json_encode($data);
+  } catch(PDOException $e) {
+    echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+  }
+});
 
 $app->get('/users', function (Request $request, Response $response) {
 	$sql = "SELECT * FROM userslists";
