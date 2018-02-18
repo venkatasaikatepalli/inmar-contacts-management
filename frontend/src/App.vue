@@ -16,8 +16,8 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="#">Login</a></li>
-              <li><a href="#">Signup</a></li>
+              <li><router-link to="/login">Login</router-link></li>
+              <li><router-link to="/signup">SignUp</router-link></li>
               <!-- <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -49,9 +49,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  padding-top: 50px;
 }
 .header {
   background-color: white;
   box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
 }
 </style>

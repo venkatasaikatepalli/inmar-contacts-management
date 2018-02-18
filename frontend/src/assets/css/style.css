@@ -9,16 +9,18 @@ body{
 	letter-spacing: 1px;
 }
 h1,h2,h3,h4,h5,h6{
+	letter-spacing: 1px;
 }
 h1{
 	font-size: 2em;
 }
 h2{
 	font-size: 1.8em;
+	margin-bottom: 15px;
 }
 h3{
 	font-size: 1.25em;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 }
 h4{
 	font-size: 1em;
@@ -59,4 +61,24 @@ p{
 }
 .no-mar{
 	margin:0;
+}
+.full-width {
+	width: 100%;
+}
+
+/*colors*/
+.blue {
+	color: #4A2AD5;
+}
+
+/*headings*/
+.sub-head {
+	/*font-weight: bold;*/
+	padding: 0.5em 1em;
+}
+
+
+/*header*/
+.navbar {
+	margin-bottom: 0px;
 }
