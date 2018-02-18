@@ -58,7 +58,12 @@
 export default {
   data () {
     return {
-      errors: [],
+      error: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        aadharno: ''
+      },
       formData: {
         firstName: '',
         lastName: '',
