@@ -1,0 +1,62 @@
+html{
+	font-size: 1em;
+}
+body{
+	font-size: 1em;
+	-webkit-font-smoothing: antialiased;
+}
+* {
+	letter-spacing: 1px;
+}
+h1,h2,h3,h4,h5,h6{
+}
+h1{
+	font-size: 2em;
+}
+h2{
+	font-size: 1.8em;
+}
+h3{
+	font-size: 1.25em;
+	margin-bottom: 15px;
+}
+h4{
+	font-size: 1em;
+}
+h5{
+	font-size: 0.75em;
+}
+h6{
+}
+p{
+	font-size: 0.9em;
+	letter-spacing: 1px;
+}
+a{
+	font-size: 0.9em;
+	text-decoration: none;
+	cursor: pointer;
+}
+a:hover{
+	text-decoration:none;
+}
+a:active{
+	text-decoration: none;
+
+}
+a:visited,a:focus{
+	text-decoration: none !important;
+}
+p{
+	text-align: justify;
+}
+/*common styles*/
+.no-pad{
+	padding: 0;
+}
+.pad-10{
+	padding: 0.6em 0em;
+}
+.no-mar{
+	margin:0;
+}
