@@ -15,7 +15,7 @@
           </div>
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" v-if="!loginStatus">
               <li><router-link to="/login">Login</router-link></li>
               <li><router-link to="/signup">SignUp</router-link></li>
               <!-- <li class="dropdown">
@@ -28,17 +28,32 @@
                 </ul>
               </li> -->
             </ul>
+            <ul class="nav navbar-nav navbar-right" v-if="loginStatus">
+              <li><router-link to="/dashboard"><span class="fa fa-tachometer"></span> Dashboard</router-link></li>
+              <li><router-link to="/contacts"><span class="fa fa-users"></span> Contacts</router-link></li>
+              <li><router-link to="/logout"><span class="fa fa-power-off"></span> Logout</router-link></li>
+            </ul>
           </div><!-- /.navbar-collapse -->
         </div>
       </nav>
     </div>
-    <router-view/>
+    <router-view @loginStatusChanged="loginStatusChanged"></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+    return {
+      loginStatus: true
+    }
+  },
+  methods: {
+    loginStatusChanged (value) {
+      this.loginStatus = value
+    }
+  }
 }
 </script>
 

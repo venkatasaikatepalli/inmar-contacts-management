@@ -61,7 +61,8 @@ export default {
             this.status = resp.data.status
             // localStorage.setItem('token', resp.data.token)
             localStorage.setItem('user_details', JSON.stringify(resp.data.userDetails))
-            alert('done')
+            this.$emit('loginStatusChanged', true)
+            this.$router.push('/dashboard')
           }
         })
         .catch((err) => {
