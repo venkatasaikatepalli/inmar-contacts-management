@@ -19,6 +19,36 @@ $app->get('/welcome', function() {
   echo "Welcome to Inmar API";
 });
 
+// signup
+
+$app->post('/signup', function($request){
+
+   $input = $request->getParsedBody();
+   $firstname = $input['firstname'];
+   $lastname = $input['lastname'];
+   $email = $input['email'];
+   $password = $input['password'];
+   $aadharno = $input['aadharno'];
+   // $date = new DateTime();
+   // $date->format('U = Y-m-d H:i:s');
+   $sql = "INSERT INTO `users`(`firstname`, `lastname`, `email`, `password`, `aadharno`, `account_status`) VALUES ('$firstname','$lastname','$email', '$password', '$aadharno',1)";
+   try {
+     $db = getDB();
+     if($stmt = $db->query($sql)==true)
+     {
+      $data = array('status' => 'success', 'message' => 'Registered Sucessfully, You can Login Now');
+      
+     }else
+      $data = array('status' => 'failed', 'message' => 'Failed Try Again');
+
+     $db = null;
+     echo json_encode($data);
+   } catch(PDOException $e) {
+     echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+   }
+});
+
+
 $app->get('/users', function (Request $request, Response $response) {
 	$sql = "SELECT * FROM userslists";
 	try {
