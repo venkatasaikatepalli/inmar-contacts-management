@@ -59,7 +59,7 @@ $app->post('/login',function($request,$response){
     $data = array(
       'status' => 'success', 
       'token' => 'token', 
-      'userdetails' => $users
+      'userDetails' => $users
       );
     echo json_encode($data);
   } catch(PDOException $e) {

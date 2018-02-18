@@ -65,6 +65,10 @@ p{
 .full-width {
 	width: 100%;
 }
+.error {
+	color: red;
+	font-size: 0.9em;
+}
 
 /*colors*/
 .blue {
