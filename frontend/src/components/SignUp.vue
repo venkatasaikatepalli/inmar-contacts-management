@@ -6,7 +6,7 @@
           <div class="row">
             <div class="col-md-offset-7 col-md-5 signup-form-block text-left">
               <h3 class="sub-head blue">Signup For New Account</h3>
-              <form>
+              <form v-if="status === 'notlogin'">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-item">
@@ -42,11 +42,15 @@
                   </div>
                 </div>
                 <div class="text-right">
-                  <button class="btn btn-primary" @click.prevent="signup">
+                  <button class="btn btn-primary" @click.prevent="signup()">
                     Signup
                   </button>
                 </div>
               </form>
+              <div v-if="status === 'success'">
+                <p class="sMessage">{{response}}</p>
+                <button to="/login" class="btn btn-primary">Go to Login Page</button>
+              </div>
             </div>
           </div>
         </div>
@@ -55,6 +59,8 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+import {constants} from '../constants.js'
 export default {
   data () {
     return {
@@ -69,11 +75,23 @@ export default {
         lastName: '',
         email: '',
         aadharno: ''
-      }
+      },
+      response: '',
+      status: 'notlogin'
     }
   },
   methods: {
     signup () {
+      axios.post(constants.signup, this.formData)
+        .then((response) => {
+          if (response.data.status === 'success') {
+            this.status = response.data.status
+            this.response = response.data.message
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   }
 }

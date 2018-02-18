@@ -76,6 +76,10 @@ p{
 	/*font-weight: bold;*/
 	padding: 0.5em 1em;
 }
+.sMessage {
+	color: green;
+	font-size: 0.9em;
+}
 
 
 /*header*/
