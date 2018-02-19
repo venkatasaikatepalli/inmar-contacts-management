@@ -10,10 +10,7 @@
         </div>
       </div>
       <div class="row contact-head">
-        <div class="col-md-1">
-          SNO
-        </div>
-        <div class="col-md-5">
+        <div class="col-md-6">
           <b>Name</b>
         </div>
         <div class="col-md-5">
@@ -23,11 +20,8 @@
         </div>
       </div>
       <div class="contacts-list">
-        <div class="row contact-item" v-for="(item, index) in contactsGroupsList" :key="item.name" >
-          <div class="col-md-1">
-            {{index + 1}}
-          </div>
-          <div class="col-md-5 c-name" @click.prevent="openFullView(item)">
+        <div class="row contact-item" v-for="item in contactsGroupsList" :key="item.name" >
+          <div class="col-md-6 c-name" @click.prevent="openFullView(item)">
             {{item.name}}
           </div>
           <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
@@ -51,34 +45,15 @@
           <h3 class="text-center"><b><span class="fa fa-users"></span> {{contactsGroupsData.name}}</b></h3>
         </div>
       </div>
-      <contacts-list :contacts-list="resultList"></contacts-list>
+      <contacts-list :contacts-list="resultList" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="contactGroupInfoChanged"></contacts-list>
     </div>
     <!-- contact dialog -->
     <el-dialog
       title=""
       :visible.sync="dialogVisible"
       width="30%">
-      <manage-group :form-title="formTitle" :contacts-group-data="contactsGroupsData" :role="role" @contactInfoChanged="contactInfoChanged"></manage-group>
+      <manage-group :form-title="formTitle" :contacts-group-data="contactsGroupsData" :role="role" @contactGroupInfoChanged="contactGroupInfoChanged"></manage-group>
     </el-dialog>
-
-    <!-- <el-dialog
-      title=""
-      :visible.sync="fullViewVisible"
-      width="30%">
-      <div class="text-right">
-        <ul class="list-inline">
-          <li><a @click.prevent="openDialog('edit', contactsGroupsData)"><span class="fa fa-pencil"></span></a></li>
-          <li><a @click.prevent="openDialog('delete', contactsGroupsData)"><span class="fa fa-trash"></span></a></li>
-        </ul>
-      </div>
-      <div class="contact-pop-info">
-        <p><b>{{ contactsGroupsData.name }}</b></p>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
-      </span>
-
-    </el-dialog> -->
   </div>
 </template>
 <script>
@@ -177,9 +152,9 @@ export default {
     back () {
       this.viewRole = 'groups'
     },
-    contactInfoChanged () {
+    contactGroupInfoChanged () {
       this.dialogVisible = false
-      this.$emit('contactInfoChanged')
+      this.$emit('contactGroupInfoChanged')
     },
     filterGroupContacts (searchKey) {
       this.resultList = []

@@ -3,6 +3,7 @@
     <div class="container-fluid">
       <div class="row" style="display:flex;">
         <div class="col-md-2 bg-blue no-pad">
+          <!-- sidenav -->
           <ul class="side-nav">
             <li>
               <p @click.prevent="tab = 'contacts'"><span class="fa fa-address-book"></span> Contacts ({{contactsList.length}})</p>
@@ -13,6 +14,7 @@
           </ul>
         </div>
         <div class="col-md-10 bg-grey min-95">
+          <!-- full-block -->
           <br>
           <div class="form-group hidden">
             <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search">
@@ -23,7 +25,7 @@
           </div>
           <div v-if="resultGroupsList">
             <h3><b><span class="fa fa-users"></span> Contacts Groups ({{resultGroupsList.length}})</b></h3>
-            <contacts-groups-list :contacts-groups-list="resultGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+            <contacts-groups-list :contacts-groups-list="resultGroupsList" @contactGroupInfoChanged="getContactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
           </div>
 
           <!-- tabs -->
@@ -33,27 +35,37 @@
                 <h3 class="black"><span class="fa fa-address-book"></span> Contacts Management</h3>
               </div>
               <div class="col-md-5 text-right">
-                <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New</button>
+                <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New Contact</button>
               </div>
             </div>
             <contacts-list :contacts-list="contactsList" @contactInfoChanged="getContactsList" :contacts-groups-list="contactsGroupsList"></contacts-list>
           </div>
           <div v-if="tab === 'groups'">
-            <contacts-groups-list :contacts-list="contactsList" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+            <contacts-groups-list :contacts-list="contactsList" :contacts-groups-list="contactsGroupsList" @contactGroupInfoChanged="getContactsGroupsList"></contacts-groups-list>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- contact dialog -->
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible"
+      width="30%">
+      <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role" @contactInfoChanged="contactAdded" :contacts-groups-list="contactsGroupsList"></manage-contact>
+    </el-dialog>
   </div>
 </template>
 <script>
 import axios from 'axios'
 import {constants} from '../constants.js'
 import ContactsList from '@/components/contacts/ContactsList'
+import ManageContact from '@/components/contacts/ManageContact'
 import ContactsGroupsList from '@/components/contacts/ContactGroupsList'
 export default {
   components: {
     ContactsList,
+    ManageContact,
     ContactsGroupsList
   },
   data () {
@@ -70,7 +82,10 @@ export default {
       contactsList: [],
       contactsGroupsList: [],
       response: '',
-      fruits: ['apple', 'banana', 'grapes', 'mango', 'orange']
+      dialogVisible: false,
+      contactData: {},
+      formTitle: '',
+      role: ''
     }
   },
   created () {
@@ -78,11 +93,6 @@ export default {
     this.getContactsGroupsList()
   },
   methods: {
-    filterItems (query) {
-      return this.fruits.filter(function (el) {
-        return el.toLowerCase().indexOf(query.toLowerCase()) > -1
-      })
-    },
     filterContacts () {
       this.tab = ''
       this.resultList = []
@@ -127,6 +137,25 @@ export default {
         .catch((err) => {
           console.log(err)
         })
+    },
+    openDialog (event, data) {
+      this.contactData = {}
+      if (event === 'add') {
+        // make a popup
+        this.dialogVisible = true
+        this.role = 'add'
+        // change the formTitle
+        this.formTitle = 'Add Contact'
+        this.contactData.u_id = this.userId
+        this.contactData.name = ''
+        this.contactData.email = ''
+        this.contactData.mobile = ''
+        this.contactData.group_id = ''
+      }
+    },
+    contactAdded () {
+      this.dialogVisible = false
+      this.getContactsList()
     }
   }
 }

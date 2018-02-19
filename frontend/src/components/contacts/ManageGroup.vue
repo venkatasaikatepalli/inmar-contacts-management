@@ -37,7 +37,7 @@ export default {
               message: resp.data.message,
               type: 'success'
             })
-            this.$emit('contactInfoChanged')
+            this.$emit('contactGroupInfoChanged')
           }
         })
         .catch((err) => {
