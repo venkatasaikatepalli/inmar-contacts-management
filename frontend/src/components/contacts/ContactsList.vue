@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="contacts-list">
-      <div class="row contact-item" v-for="(item, index) in contactsList" :key="item.name">
+      <div class="row contact-item" v-for="(item, index) in contactsList" :key="item.name" @click.prevent="openFullView(item)">
         <div class="col-md-1">
           {{index + 1}}
         </div>
@@ -47,6 +47,25 @@
       width="30%">
       <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role" @contactInfoChanged="contactInfoChanged"></manage-contact>
     </el-dialog>
+    <el-dialog
+      title=""
+      :visible.sync="fullViewVisible"
+      width="30%">
+      <div class="text-right">
+        <ul class="list-inline">
+          <li><a @click.prevent="openDialog('edit', contactData)"><span class="fa fa-pencil"></span></a></li>
+          <li><a @click.prevent="openDialog('delete', contactData)"><span class="fa fa-trash"></span></a></li>
+        </ul>
+      </div>
+      <div class="contact-pop-info">
+        <p><b>{{ contactData.name }}</b></p>
+        <p><b>{{ contactData.mobile }}</b></p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
+      </span>
+
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -62,6 +81,7 @@ export default {
     return {
       response: '',
       dialogVisible: false,
+      fullViewVisible: false,
       contactData: {},
       formTitle: '',
       role: '',
@@ -70,6 +90,7 @@ export default {
   },
   methods: {
     openDialog (event, data) {
+      this.fullViewVisible = false
       this.contactData = {}
       if (event === 'edit') {
         // make a popup
@@ -130,6 +151,10 @@ export default {
           })
         })
     },
+    openFullView (data) {
+      this.fullViewVisible = true
+      this.contactData = data
+    },
     contactInfoChanged () {
       this.dialogVisible = false
       this.$emit('contactInfoChanged')
@@ -148,6 +173,7 @@ export default {
     color: black;
     padding: 1em;
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    cursor: pointer;
   }
   .contact-item:hover {
     background-color: #4A2AD5;
@@ -179,5 +205,12 @@ export default {
     background-color:orange;
     /*outline: 0px solid #BA4A00;*/
     outline: 0px solid blue;
+  }
+  .contact-pop-info {
+    padding: 0em 1em 1em;
+  }
+  .contact-pop-info p{
+    font-weight: bold;
+    font-size: 1em;
   }
 </style>
