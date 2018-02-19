@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="row">
+      <div class="col-md-7">
+        <h3 class="black"><span class="fa fa-users"></span> Contacts Management</h3>
+      </div>
+      <div class="col-md-5 text-right">
+        <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New</button>
+      </div>
+    </div>
     <div class="row contact-head">
       <div class="col-md-1">
         SNO
@@ -26,20 +34,56 @@
         </div>
         <div class="col-md-1 text-right">
           <ul class="list-inline">
-            <li><a href=""><span class="fa fa-pencil"></span></a></li>
+            <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
             <li><a href=""><span class="fa fa-trash"></span></a></li>
           </ul>
         </div>
       </div>
     </div>
+    <!-- contact dialog -->
+    <el-dialog
+      title=""
+      :visible.sync="dialogVisible"
+      width="30%">
+      <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role"></manage-contact>
+    </el-dialog>
   </div>
 </template>
 <script>
+import ManageContact from '@/components/contacts/ManageContact'
 export default {
+  components: {
+    ManageContact
+  },
   props: ['contactsList', 'u_id'],
   data () {
     return {
-      response: ''
+      response: '',
+      dialogVisible: false,
+      contactData: {},
+      formTitle: '',
+      role: ''
+    }
+  },
+  methods: {
+    openDialog (event, data) {
+      this.contactData = {}
+      if (event === 'edit') {
+        // make a popup
+        this.dialogVisible = true
+        this.role = 'edit'
+        // change the formTitle
+        this.formTitle = 'Edit Contact'
+        // generate form Data
+        this.contactData = data
+      }
+      if (event === 'add') {
+        // make a popup
+        this.dialogVisible = true
+        this.role = 'add'
+        // change the formTitle
+        this.formTitle = 'Add Contact'
+      }
     }
   }
 }
@@ -61,8 +105,11 @@ export default {
     color: white;
     font-weight: bold;
   }
+  .contact-item:hover .contact-item .fa{
+    color: white;
+  }
   .contacts-list {
-    height: 80vh;
+    max-height: 80vh;
     overflow-y: scroll;
     width: 100%;
     box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.10);
