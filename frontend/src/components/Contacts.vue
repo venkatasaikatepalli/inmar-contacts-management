@@ -26,8 +26,21 @@
             <contacts-groups-list :contacts-groups-list="resultGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
           </div>
 
-          <contacts-list v-if="tab === 'contacts'" :contacts-list="contactsList" @contactInfoChanged="getContactsList" :contacts-groups-list="contactsGroupsList"></contacts-list>
-          <contacts-groups-list v-if="tab === 'groups'" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+          <!-- tabs -->
+          <div  v-if="tab === 'contacts'">
+            <div class="row">
+              <div class="col-md-7">
+                <h3 class="black"><span class="fa fa-address-book"></span> Contacts Management</h3>
+              </div>
+              <div class="col-md-5 text-right">
+                <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New</button>
+              </div>
+            </div>
+            <contacts-list :contacts-list="contactsList" @contactInfoChanged="getContactsList" :contacts-groups-list="contactsGroupsList"></contacts-list>
+          </div>
+          <div v-if="tab === 'groups'">
+            <contacts-groups-list :contacts-list="contactsList" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+          </div>
         </div>
       </div>
     </div>

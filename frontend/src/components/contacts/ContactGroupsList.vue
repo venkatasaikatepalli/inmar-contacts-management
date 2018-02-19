@@ -1,44 +1,57 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-md-7">
-        <h3 class="black"><span class="fa fa-users"></span> Contacts Groups Management</h3>
+    <div v-if="viewRole === 'groups'">
+      <div class="row">
+        <div class="col-md-7">
+          <h3 class="black"><span class="fa fa-users"></span> Contacts Groups Management</h3>
+        </div>
+        <div class="col-md-5 text-right">
+          <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New Group</button>
+        </div>
       </div>
-      <div class="col-md-5 text-right">
-        <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New Group</button>
-      </div>
-    </div>
-    <div class="row contact-head">
-      <div class="col-md-1">
-        SNO
-      </div>
-      <div class="col-md-5">
-        <b>Name</b>
-      </div>
-      <div class="col-md-5">
-        <b>Status</b>
-      </div>
-      <div class="col-md-1">
-      </div>
-    </div>
-    <div class="contacts-list">
-      <div class="row contact-item" v-for="(item, index) in contactsGroupsList" :key="item.name" >
+      <div class="row contact-head">
         <div class="col-md-1">
-          {{index + 1}}
+          SNO
         </div>
-        <div class="col-md-5 c-name" @click.prevent="openFullView(item)">
-          {{item.name}}
+        <div class="col-md-5">
+          <b>Name</b>
         </div>
-        <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
-          {{item.status}}
+        <div class="col-md-5">
+          <b>Status</b>
         </div>
-        <div class="col-md-1 text-right">
-          <ul class="list-inline">
-            <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
-            <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
-          </ul>
+        <div class="col-md-1">
         </div>
       </div>
+      <div class="contacts-list">
+        <div class="row contact-item" v-for="(item, index) in contactsGroupsList" :key="item.name" >
+          <div class="col-md-1">
+            {{index + 1}}
+          </div>
+          <div class="col-md-5 c-name" @click.prevent="openFullView(item)">
+            {{item.name}}
+          </div>
+          <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
+            {{item.status}}
+          </div>
+          <div class="col-md-1 text-right">
+            <ul class="list-inline">
+              <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
+              <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="viewRole === 'groupContacts'">
+      <div class="row">
+        <div class="col-md-3">
+          <el-button size="mini" @click.prevent="viewRole = 'groups'"><span class="fa fa-left" ></span> <span class="fa fa-arrow-left"></span> Back</el-button>
+        </div>
+        <div class="col-md-6">
+          <h3 class="text-center"><b><span class="fa fa-users"></span> {{contactsGroupsData.name}}</b></h3>
+        </div>
+      </div>
+      <contacts-list :contacts-list="resultList"></contacts-list>
     </div>
     <!-- contact dialog -->
     <el-dialog
@@ -47,7 +60,8 @@
       width="30%">
       <manage-group :form-title="formTitle" :contacts-group-data="contactsGroupsData" :role="role" @contactInfoChanged="contactInfoChanged"></manage-group>
     </el-dialog>
-    <el-dialog
+
+    <!-- <el-dialog
       title=""
       :visible.sync="fullViewVisible"
       width="30%">
@@ -64,18 +78,20 @@
         <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
       </span>
 
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script>
 import {constants} from '@/constants.js'
 import axios from 'axios'
 import ManageGroup from '@/components/contacts/ManageGroup'
+import ContactsList from '@/components/contacts/ContactsList'
 export default {
   components: {
-    ManageGroup
+    ManageGroup,
+    ContactsList
   },
-  props: ['contactsGroupsList'],
+  props: ['contactsGroupsList', 'contactsList'],
   data () {
     return {
       response: '',
@@ -83,8 +99,10 @@ export default {
       fullViewVisible: false,
       contactsGroupsData: {},
       formTitle: '',
+      viewRole: 'groups',
       role: '',
-      userId: '102'
+      userId: '102',
+      resultList: []
     }
   },
   methods: {
@@ -151,12 +169,28 @@ export default {
         })
     },
     openFullView (data) {
-      this.fullViewVisible = true
+      this.viewRole = 'groupContacts'
+      // this.fullViewVisible = true
       this.contactsGroupsData = data
+      this.filterGroupContacts(data.id)
+    },
+    back () {
+      this.viewRole = 'groups'
     },
     contactInfoChanged () {
       this.dialogVisible = false
       this.$emit('contactInfoChanged')
+    },
+    filterGroupContacts (searchKey) {
+      this.resultList = []
+      var len = this.contactsList.length
+      if (len > 0) {
+        for (var i = 0; i < len; i++) {
+          if (this.contactsList[i].group_id === searchKey) {
+            this.resultList.push(this.contactsList[i])
+          }
+        }
+      }
     }
   }
 }

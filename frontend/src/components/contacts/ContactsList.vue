@@ -1,13 +1,5 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-md-7">
-        <h3 class="black"><span class="fa fa-address-book"></span> Contacts Management</h3>
-      </div>
-      <div class="col-md-5 text-right">
-        <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New</button>
-      </div>
-    </div>
     <div class="row contact-head">
       <div class="col-md-4">
         <b>Name</b>
