@@ -45,7 +45,7 @@
       title=""
       :visible.sync="dialogVisible"
       width="30%">
-      <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role" @contactInfoChanged="contactInfoChanged"></manage-contact>
+      <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role" @contactInfoChanged="contactInfoChanged" :contacts-groups-list="contactsGroupsList"></manage-contact>
     </el-dialog>
     <el-dialog
       title=""
@@ -58,9 +58,10 @@
         </ul>
       </div>
       <div class="contact-pop-info">
-        <p><b>{{ contactData.name }}</b></p>
-        <p><b>{{ contactData.mobile }}</b></p>
-        <p><b>{{ contactData.email }}</b></p>
+        <p><span class="nm">Name:</span> <br><b>{{ contactData.name }}</b></p>
+        <p><span class="nm">Mobile Number:</span><br><b>{{ contactData.mobile }}</b></p>
+        <p><span class="nm">Email Address:</span> <br><b>{{ contactData.email }}</b></p>
+        <p v-for="item in contactsGroupsList" :key="item.id" v-if="contactData.group_id === item.id"><span class="nm">Group: </span><br><b>{{ item.name }}</b></p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
@@ -77,7 +78,7 @@ export default {
   components: {
     ManageContact
   },
-  props: ['contactsList'],
+  props: ['contactsList', 'contactsGroupsList'],
   data () {
     return {
       response: '',
@@ -104,6 +105,7 @@ export default {
         this.contactData.name = data.name
         this.contactData.mobile = data.mobile
         this.contactData.email = data.email
+        this.contactData.group_id = data.group_id
         this.contactData.u_id = this.userId
       }
       if (event === 'add') {
@@ -178,8 +180,7 @@ export default {
     cursor: pointer;
   }
   .contact-item:hover {
-    background-color: #4A2AD5;
-    color: white;
+    background-color: rgba(0,0,0,0.01);
     font-weight: bold;
   }
   .contact-item:hover .contact-item .fa{
@@ -214,5 +215,9 @@ export default {
   .contact-pop-info p{
     font-weight: bold;
     font-size: 1em;
+  }
+  .nm{
+    color: rgba(0,0,0,0.4);
+    font-size: 0.9em;
   }
 </style>

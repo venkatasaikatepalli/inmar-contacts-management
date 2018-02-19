@@ -5,6 +5,13 @@
       <label for="">Name</label>
       <input type="text" name="name" v-model="contactsGroupData.name">
     </div>
+    <div class="form-group">
+      <label for="">Status</label>
+      <select name="" id="" v-model="contactsGroupData.status">
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+      </select>
+    </div>
     <div class="text-center">
       <el-button type="success" @click.prevent="manageContactGroup">{{ formTitle }}</el-button>
     </div>

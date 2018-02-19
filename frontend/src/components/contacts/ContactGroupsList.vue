@@ -100,7 +100,7 @@ export default {
         // generate form Data
         this.contactsGroupsData.id = data.id
         this.contactsGroupsData.name = data.name
-        this.contactsGroupsData.mobile = data.mobile
+        this.contactsGroupsData.status = data.status
         this.contactsGroupsData.u_id = this.userId
       }
       if (event === 'add') {
@@ -175,8 +175,7 @@ export default {
     cursor: pointer;
   }
   .contact-item:hover {
-    background-color: #4A2AD5;
-    color: white;
+    background-color: rgba(0,0,0,0.01);
     font-weight: bold;
   }
   .contact-item:hover .contact-item .fa{

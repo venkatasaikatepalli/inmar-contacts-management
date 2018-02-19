@@ -5,24 +5,32 @@
         <div class="col-md-2 bg-blue no-pad">
           <ul class="side-nav">
             <li>
-              <p @click.prevent="tab = 'contacts'"><span class="fa fa-address-book"></span> Contacts</p>
+              <p @click.prevent="tab = 'contacts'"><span class="fa fa-address-book"></span> Contacts ({{contactsList.length}})</p>
             </li>
             <li>
-              <p @click.prevent="tab = 'groups'"><span class="fa fa-users"></span> Contact Groups</p>
+              <p @click.prevent="tab = 'groups'"><span class="fa fa-users"></span> Contact Groups ({{contactsGroupsList.length}})</p>
             </li>
           </ul>
         </div>
         <div class="col-md-10 bg-grey min-95">
-          <div class="form-group">
+          <br>
+          <div class="form-group hidden">
             <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search">
           </div>
-          <button class="btn btn-primary" @click.prevent="filterContacts">Filter</button>
-          <contacts-list v-if="tab === 'contacts'" :contacts-list="contactsList" @contactInfoChanged="getContactsList"></contacts-list>
+          <div v-if="resultList">
+            <h3><b><span class="fa fa-address-book"></span> Contacts ({{resultList.length}})</b></h3>
+           <contacts-list :contacts-list="resultList" @contactInfoChanged="getContactsList"></contacts-list>
+          </div>
+          <div v-if="resultGroupsList">
+            <h3><b><span class="fa fa-users"></span> Contacts Groups ({{resultGroupsList.length}})</b></h3>
+            <contacts-groups-list :contacts-groups-list="resultGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+          </div>
+
+          <contacts-list v-if="tab === 'contacts'" :contacts-list="contactsList" @contactInfoChanged="getContactsList" :contacts-groups-list="contactsGroupsList"></contacts-list>
           <contacts-groups-list v-if="tab === 'groups'" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
         </div>
       </div>
     </div>
-    <!-- <p>{{contactsList}}</p> -->
   </div>
 </template>
 <script>
@@ -40,7 +48,8 @@ export default {
       tab: 'contacts',
       searchKey: '',
       searchContactsList: [],
-      resultList: [],
+      resultList: '',
+      resultGroupsList: '',
       userId: 102,
       formData: {
         u_id: '102'
@@ -62,11 +71,22 @@ export default {
       })
     },
     filterContacts () {
+      this.tab = ''
+      this.resultList = []
       var len = this.searchContactsList.length
       if (len > 0) {
         for (var i = 0; i < len; i++) {
           if (this.searchContactsList[i].name.toLowerCase().indexOf(this.searchKey) >= 0) {
             this.resultList.push(this.searchContactsList[i])
+          }
+        }
+      }
+      this.resultGroupsList = []
+      var lenn = this.contactsGroupsList.length
+      if (lenn > 0) {
+        for (var j = 0; j < lenn; j++) {
+          if (this.contactsGroupsList[j].name.toLowerCase().indexOf(this.searchKey) >= 0) {
+            this.resultGroupsList.push(this.contactsGroupsList[j])
           }
         }
       }
@@ -105,6 +125,7 @@ export default {
 }
 .side-nav {
   margin:0px;
+  margin-top:2em;
   padding:0px;
   width: 100%;
   display: inline-block;
@@ -131,5 +152,12 @@ export default {
   width: 40%;
   outline: none;
   box-shadow: none;
+}
+.srch-cnt-head {
+  padding: 1em 0em;
+}
+.srch-cnt-item {
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  padding: 0.5em;
 }
 </style>

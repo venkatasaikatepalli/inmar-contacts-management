@@ -110,3 +110,22 @@ p{
 .navbar {
 	margin-bottom: 0px;
 }
+.contact-head {
+	color: white;
+}
+.form-group {
+	margin:1em 0em;
+}
+.form-group input, .form-group select {
+	border: none;
+	background-color: transparent;
+	border-bottom: 1px solid black;
+	outline: none;
+	width: 90%;
+}
+.form-group input:focus {
+	border-color: orange;
+}
+.form-group label {
+	width: 100%;
+}

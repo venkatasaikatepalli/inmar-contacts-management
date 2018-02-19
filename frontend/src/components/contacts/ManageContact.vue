@@ -13,6 +13,13 @@
       <label for="">Email</label>
       <input type="text" name="name" v-model="contactData.email">
     </div>
+    <div class="form-group">
+      <label for="">Group</label>
+      <select name="" v-model="contactData.group_id" id="">
+        <option v-for="item in contactsGroupsList" :key="item.name" v-bind:value="item.id">{{item.name}}</option>
+      </select>
+    </div>
+
     <div class="text-center">
       <el-button type="success" @click.prevent="manageContact">{{ formTitle }}</el-button>
     </div>
@@ -22,7 +29,7 @@
 import axios from 'axios'
 import {constants} from '@/constants.js'
 export default {
-  props: ['contactData', 'formTitle', 'role'],
+  props: ['contactData', 'formTitle', 'role', 'contactsGroupsList'],
   data () {
     return {
       response: ''
