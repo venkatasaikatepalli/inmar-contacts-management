@@ -28,6 +28,11 @@
                 </ul>
               </li> -->
             </ul>
+            <!-- <form class="navbar-form navbar-left search-block" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" v-on="keyup:makeAlert | key enter" placeholder="Search">
+              </div>
+            </form> -->
             <ul class="nav navbar-nav navbar-right" v-if="loginStatus">
               <li><router-link to="/dashboard"><span class="fa fa-tachometer"></span> Dashboard</router-link></li>
               <li><router-link to="/contacts"><span class="fa fa-users"></span> Contacts</router-link></li>
@@ -72,5 +77,13 @@ export default {
   left: 0;
   right: 0;
   z-index: 50;
+}
+.search-block {
+  margin-left: 3em;
+}
+.search-block .form-control{
+  width: 40vw;
+  background-color: rgba(0,0,0,0.05);
+  border-radius: 0px;
 }
 </style>

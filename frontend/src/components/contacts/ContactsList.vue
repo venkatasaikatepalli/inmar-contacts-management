@@ -2,38 +2,38 @@
   <div>
     <div class="row">
       <div class="col-md-7">
-        <h3 class="black"><span class="fa fa-users"></span> Contacts Management</h3>
+        <h3 class="black"><span class="fa fa-address-book"></span> Contacts Management</h3>
       </div>
       <div class="col-md-5 text-right">
         <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New</button>
       </div>
     </div>
     <div class="row contact-head">
-      <div class="col-md-1">
-        SNO
-      </div>
-      <div class="col-md-5">
+      <div class="col-md-4">
         <b>Name</b>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-3">
         <b>Mobile Number</b>
+      </div>
+      <div class="col-md-4">
+        <b>Email Address</b>
       </div>
       <div class="col-md-1">
       </div>
     </div>
     <div class="contacts-list">
-      <div class="row contact-item" v-for="(item, index) in contactsList" :key="item.name" @click.prevent="openFullView(item)">
-        <div class="col-md-1">
-          {{index + 1}}
-        </div>
-        <div class="col-md-5 c-name">
+      <div class="row contact-item" v-for="item in contactsList" :key="item.name">
+        <div class="col-md-4 c-name" @click.prevent="openFullView(item)">
           {{item.name}}
         </div>
-        <div class="col-md-5 c-number">
+        <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
           {{item.mobile}}
         </div>
+        <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
+          {{item.email}}
+        </div>
         <div class="col-md-1 text-right">
-          <ul class="list-inline">
+          <ul class="list-inline float-right">
             <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
             <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
           </ul>
@@ -60,6 +60,7 @@
       <div class="contact-pop-info">
         <p><b>{{ contactData.name }}</b></p>
         <p><b>{{ contactData.mobile }}</b></p>
+        <p><b>{{ contactData.email }}</b></p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
@@ -102,6 +103,7 @@ export default {
         this.contactData.id = data.id
         this.contactData.name = data.name
         this.contactData.mobile = data.mobile
+        this.contactData.email = data.email
         this.contactData.u_id = this.userId
       }
       if (event === 'add') {

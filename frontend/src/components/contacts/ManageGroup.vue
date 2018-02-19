@@ -3,14 +3,10 @@
     <h3 class="text-center"><b>{{ formTitle }}</b></h3>
     <div class="form-group">
       <label for="">Name</label>
-      <input type="text" name="name" v-model="contactData.name">
-    </div>
-    <div class="form-group">
-      <label for="">Mobile</label>
-      <input type="number" name="name" v-model="contactData.mobile">
+      <input type="text" name="name" v-model="contactsGroupData.name">
     </div>
     <div class="text-center">
-      <el-button type="success" @click.prevent="manageContact">{{ formTitle }}</el-button>
+      <el-button type="success" @click.prevent="manageContactGroup">{{ formTitle }}</el-button>
     </div>
   </div>
 </template>
@@ -18,15 +14,15 @@
 import axios from 'axios'
 import {constants} from '@/constants.js'
 export default {
-  props: ['contactData', 'formTitle', 'role'],
+  props: ['contactsGroupData', 'formTitle', 'role'],
   data () {
     return {
       response: ''
     }
   },
   methods: {
-    manageContact () {
-      axios.post(constants.manage_contact, this.contactData)
+    manageContactGroup () {
+      axios.post(constants.manage_contacts_group, this.contactsGroupData)
         .then((resp) => {
           if (resp.data.status === 'success') {
             this.$notify({

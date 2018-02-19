@@ -71,7 +71,7 @@ $app->post('/login',function($request,$response){
 $app->post('/contacts', function (Request $request, Response $response) {
   $input = $request->getParsedBody();
   $u_id = $input['u_id'];
-  $sql = "SELECT id,name,mobile FROM `contacts` WHERE user_id=$u_id";
+  $sql = "SELECT id,name,mobile,email FROM `contacts` WHERE user_id=$u_id";
   try {
     $db = getDB();
     $stmt = $db->query($sql);  
@@ -178,6 +178,33 @@ $app->post('/delete_contact', function($request){
     }
 });
 
+// contacts by id
+$app->post('/contacts_groups', function (Request $request, Response $response) {
+  $input = $request->getParsedBody();
+  $u_id = $input['u_id'];
+  $sql = "SELECT * FROM `contact_groups` WHERE user_id=$u_id";
+  try {
+    $db = getDB();
+    $stmt = $db->query($sql);  
+    $contacts = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+
+    $key = 'codejunkers';
+    $id = 10;
+    $key2="";
+    $signature = hash_hmac('SHA256',"$key,$id",$key2);
+
+    $data = array(
+      'status' => 'success', 
+      'token' => $signature, 
+      'contacts' => $contacts
+     );
+    echo json_encode($data);
+  } catch(PDOException $e) {
+  //     //error_log($e->getMessage(), 3, '/var/tmp/php.log');
+    echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+  }
+});
 
 $app->post('/users', function (Request $request, Response $response) {
 

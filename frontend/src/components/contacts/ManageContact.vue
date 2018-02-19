@@ -9,6 +9,10 @@
       <label for="">Mobile</label>
       <input type="number" name="name" v-model="contactData.mobile">
     </div>
+    <div class="form-group">
+      <label for="">Email</label>
+      <input type="text" name="name" v-model="contactData.email">
+    </div>
     <div class="text-center">
       <el-button type="success" @click.prevent="manageContact">{{ formTitle }}</el-button>
     </div>

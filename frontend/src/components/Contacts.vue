@@ -12,9 +12,13 @@
             </li>
           </ul>
         </div>
-        <div class="col-md-10 bg-grey min-95 contacts-block">
+        <div class="col-md-10 bg-grey min-95">
+          <div class="form-group">
+            <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search">
+          </div>
+          <button class="btn btn-primary" @click.prevent="filterContacts">Filter</button>
           <contacts-list v-if="tab === 'contacts'" :contacts-list="contactsList" @contactInfoChanged="getContactsList"></contacts-list>
-          <contacts-groups-list v-if="tab === 'groups'" :contacts-list="contactsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+          <contacts-groups-list v-if="tab === 'groups'" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
         </div>
       </div>
     </div>
@@ -34,23 +38,57 @@ export default {
   data () {
     return {
       tab: 'contacts',
+      searchKey: '',
+      searchContactsList: [],
+      resultList: [],
       userId: 102,
       formData: {
         u_id: '102'
       },
       contactsList: [],
-      response: ''
+      contactsGroupsList: [],
+      response: '',
+      fruits: ['apple', 'banana', 'grapes', 'mango', 'orange']
     }
   },
   created () {
     this.getContactsList()
+    this.getContactsGroupsList()
   },
   methods: {
+    filterItems (query) {
+      return this.fruits.filter(function (el) {
+        return el.toLowerCase().indexOf(query.toLowerCase()) > -1
+      })
+    },
+    filterContacts () {
+      var len = this.searchContactsList.length
+      if (len > 0) {
+        for (var i = 0; i < len; i++) {
+          if (this.searchContactsList[i].name.toLowerCase().indexOf(this.searchKey) >= 0) {
+            this.resultList.push(this.searchContactsList[i])
+          }
+        }
+      }
+      // string1.indexOf(string2) >= 0
+    },
     getContactsList () {
       axios.post(constants.get_contacts, this.formData)
         .then((resp) => {
           if (resp.data.status === 'success') {
             this.contactsList = resp.data.contacts
+            this.searchContactsList = resp.data.contacts
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    },
+    getContactsGroupsList () {
+      axios.post(constants.get_contacts_groups, this.formData)
+        .then((resp) => {
+          if (resp.data.status === 'success') {
+            this.contactsGroupsList = resp.data.contacts
           }
         })
         .catch((err) => {
@@ -83,5 +121,15 @@ export default {
   color: white;
   font-weight: bold;
   cursor: pointer;
+}
+.search-bar {
+  border:none;
+  border-radius: 0px;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
+  background-color: transparent;
+  margin: 1.5em 0em;
+  width: 40%;
+  outline: none;
+  box-shadow: none;
 }
 </style>
