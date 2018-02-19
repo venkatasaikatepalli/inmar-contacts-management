@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-md-7">
-        <h3 class="black"><span class="fa fa-users"></span> Contacts Management</h3>
+        <h3 class="black"><span class="fa fa-users"></span> Contact Groups Management</h3>
       </div>
       <div class="col-md-5 text-right">
         <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New</button>
@@ -35,7 +35,7 @@
         <div class="col-md-1 text-right">
           <ul class="list-inline">
             <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
-            <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
+            <li><a href=""><span class="fa fa-trash"></span></a></li>
           </ul>
         </div>
       </div>
@@ -50,8 +50,6 @@
   </div>
 </template>
 <script>
-import {constants} from '@/constants.js'
-import axios from 'axios'
 import ManageContact from '@/components/contacts/ManageContact'
 export default {
   components: {
@@ -78,10 +76,7 @@ export default {
         // change the formTitle
         this.formTitle = 'Edit Contact'
         // generate form Data
-        this.contactData.id = data.id
-        this.contactData.name = data.name
-        this.contactData.mobile = data.mobile
-        this.contactData.u_id = this.userId
+        this.generateForm(data)
       }
       if (event === 'add') {
         // make a popup
@@ -89,46 +84,14 @@ export default {
         this.role = 'add'
         // change the formTitle
         this.formTitle = 'Add Contact'
-        this.contactData.u_id = this.userId
-      }
-      if (event === 'delete') {
-        this.contactData.id = data.id
-        this.$confirm('This will permanently delete the Contact. Continue?', 'Warning', {
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Cancel',
-          type: 'warning',
-          center: true
-        })
-          .then(() => {
-            this.deleteContact(data)
-          })
-          .catch(() => {
-            this.$message({
-              type: 'info',
-              message: 'Delete canceled'
-            })
-          })
+        this.generateForm(null)
       }
     },
-    deleteContact (data) {
-      axios.post(constants.delete_contact, this.contactData)
-        .then((resp) => {
-          if (resp.data.status === 'success') {
-            this.$notify({
-              title: 'Success',
-              message: resp.data.message,
-              type: 'success'
-            })
-            this.$emit('contactInfoChanged')
-          }
-        })
-        .catch((err) => {
-          this.$notify({
-            title: 'Failed',
-            message: err.response.data.message,
-            type: 'error'
-          })
-        })
+    generateForm (data) {
+      this.contactData.id = data.id
+      this.contactData.name = data.name
+      this.contactData.mobile = data.mobile
+      this.contactData.u_id = this.userId
     },
     contactInfoChanged () {
       this.dialogVisible = false

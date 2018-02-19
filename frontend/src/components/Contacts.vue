@@ -5,15 +5,16 @@
         <div class="col-md-2 bg-blue no-pad">
           <ul class="side-nav">
             <li>
-              <a href="#"><span class="fa fa-address-book"></span> Contacts</a>
+              <p @click.prevent="tab = 'contacts'"><span class="fa fa-address-book"></span> Contacts</p>
             </li>
             <li>
-              <a href="#"><span class="fa fa-users"></span> Contact Groups</a>
+              <p @click.prevent="tab = 'groups'"><span class="fa fa-users"></span> Contact Groups</p>
             </li>
           </ul>
         </div>
         <div class="col-md-10 bg-grey min-95 contacts-block">
-          <contacts-list :contacts-list="contactsList"></contacts-list>
+          <contacts-list v-if="tab === 'contacts'" :contacts-list="contactsList" @contactInfoChanged="getContactsList"></contacts-list>
+          <contacts-groups-list v-if="tab === 'groups'" :contacts-list="contactsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
         </div>
       </div>
     </div>
@@ -24,13 +25,16 @@
 import axios from 'axios'
 import {constants} from '../constants.js'
 import ContactsList from '@/components/contacts/ContactsList'
+import ContactsGroupsList from '@/components/contacts/ContactGroupsList'
 export default {
   components: {
-    ContactsList
+    ContactsList,
+    ContactsGroupsList
   },
   data () {
     return {
-      u_id: '102',
+      tab: 'contacts',
+      userId: 102,
       formData: {
         u_id: '102'
       },
@@ -75,8 +79,9 @@ export default {
   text-align: left;
   border-bottom: 1px solid rgba(255,255,255,0.5);
 }
-.side-nav>li>a {
+.side-nav>li>p {
   color: white;
   font-weight: bold;
+  cursor: pointer;
 }
 </style>

@@ -116,6 +116,68 @@ $app->post('/addcontact', function (Request $request, Response $response) {
      }
 });
 
+// manage contact add edit
+$app->post('/manage_contact', function($request){
+   $input = $request->getParsedBody();
+   $name = $input['name'];
+   $mobile = $input['mobile'];
+   // if data contains id it is update
+   if ($input['id']) {
+     # code...
+    $id=$input['id'];
+   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile' WHERE id=$id";
+   try {
+     $db = getDB();
+     if($stmt = $db->query($sql)==true)
+     {
+      $data = array('status' => 'success', 'message' => 'Updated Sucessfully');
+     }else
+      $data = array('status' => 'failed', 'message' => 'Failed Try Again');
+     $db = null;
+     echo json_encode($data);
+   } catch(PDOException $e) {
+     echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+   }
+
+   } else {
+    // else add new
+    $u_id = $input['u_id'];
+    $sql = "INSERT INTO `contacts`(`name`, `mobile`, `user_id`) VALUES ('$name','$mobile', $u_id)";
+    try {
+      $db = getDB();
+      if($stmt = $db->query($sql)==true)
+      {
+       $data = array('status' => 'success', 'message' => 'Added Sucessfully');
+      }else
+       $data = array('status' => 'failed', 'message' => 'Failed Try Again');
+      $db = null;
+      echo json_encode($data);
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }
+   }
+   
+});
+
+// manage contact add edit
+$app->post('/delete_contact', function($request){
+    $input = $request->getParsedBody();
+    $id=$input['id'];
+    $sql = "Delete from `contacts` WHERE id=$id";
+    try {
+      $db = getDB();
+      if($stmt = $db->query($sql)==true)
+      {
+       $data = array('status' => 'success', 'message' => 'Deleted Sucessfully');
+      }else
+       $data = array('status' => 'failed', 'message' => 'Failed Try Again');
+      $db = null;
+      echo json_encode($data);
+    } catch(PDOException $e) {
+      echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+    }
+});
+
 
 $app->post('/users', function (Request $request, Response $response) {
 

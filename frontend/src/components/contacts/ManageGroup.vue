@@ -1,7 +1,6 @@
 <template>
   <div class="form">
     <h3 class="text-center"><b>{{ formTitle }}</b></h3>
-    {{contactData}}
     <div class="form-group">
       <label for="">Name</label>
       <input type="text" name="name" v-model="contactData.name">
