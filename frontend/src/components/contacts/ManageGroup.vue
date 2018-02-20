@@ -8,8 +8,8 @@
     <div class="form-group">
       <label for="">Status</label>
       <select name="" id="" v-model="contactsGroupData.status">
-        <option value="1">Active</option>
-        <option value="0">Inactive</option>
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
       </select>
     </div>
     <div class="text-center">

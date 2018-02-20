@@ -260,7 +260,7 @@ $app->post('/manage_contacts_group', function($request){
    if ($input['id']) {
      # code...
     $id=$input['id'];
-   $sql = "UPDATE `contact_groups` SET `name`='$name',`status`=$status WHERE id=$id";
+   $sql = "UPDATE `contact_groups` SET `name`='$name',`status`='$status' WHERE id=$id";
    try {
      $db = getDB();
      if($stmt = $db->query($sql)==true)
@@ -277,7 +277,7 @@ $app->post('/manage_contacts_group', function($request){
    } else {
     // else add new
     $u_id = $input['u_id'];
-    $sql = "INSERT INTO `contact_groups`(`user_id`, `name`, `status`) VALUES ($u_id, '$name', $status)";
+    $sql = "INSERT INTO `contact_groups`(`user_id`, `name`, `status`) VALUES ($u_id, '$name', '$status')";
     try {
       $db = getDB();
       if($stmt = $db->query($sql)==true)

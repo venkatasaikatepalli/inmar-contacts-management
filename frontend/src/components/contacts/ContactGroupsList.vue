@@ -40,8 +40,8 @@
               {{item.name}}
             </div>
             <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
-              <p v-if="item.status === '1'">Active</p>
-              <p class="red" v-if="item.status === '0'">InActive</p>
+              <p v-if="item.status === 'Active'">Active</p>
+              <p class="red" v-if="item.status === 'Inactive'"> InActive</p>
             </div>
             <div class="col-md-1 text-right">
               <ul class="list-inline">
@@ -165,7 +165,7 @@ export default {
         // change the formTitle
         this.formTitle = 'Add Contacts Group'
         this.contactsGroupsData.u_id = this.userId
-        this.contactsGroupsData.status = 1
+        this.contactsGroupsData.status = 'Active'
       }
       if (event === 'delete') {
         this.contactsGroupsData.id = data.id
