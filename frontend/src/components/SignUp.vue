@@ -42,14 +42,14 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6 no-pad">
+                  <div class="col-md-6 col-xs-6 no-pad">
                     <div class="form-item">
                       <label for="firstName">Email Address</label>
                       <input type="text" name="email" v-model="email.name" placeholder="emailaddress">
                       <span class="error" v-if="error.email">{{error.email}}</span>
                     </div>
                   </div>
-                  <div class="col-md-6 no-pad">
+                  <div class="col-md-6 col-xs-6 no-pad">
                     <div class="form-item">
                       <label for="firstName"><br></label>
                       <input type="text" name="email" disabled v-model="email.domain" placeholder="emailaddress">
@@ -74,7 +74,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="text-right">
+                <div class="text-right mb-top-1">
                   <button class="btn btn-primary" @click.prevent="signup()">
                     Signup
                   </button>

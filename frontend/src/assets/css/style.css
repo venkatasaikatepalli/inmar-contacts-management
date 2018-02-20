@@ -4,12 +4,9 @@ html{
 body{
 	font-size: 1em;
 	-webkit-font-smoothing: antialiased;
-	/*overflow-x: hidden;*/																																																																																																																																																																																															
+	overflow-x: hidden;																																																																																																																																																																																															
 }
 * {
-	/*font-family: 'Crimson Text', serif;*/
-	/*font-family: 'Ubuntu', sans-serif;*/
-	/*font-family: 'Arimo', sans-serif;*/
 	font-family: 'Muli', sans-serif;
 	letter-spacing: 1px;
 }
@@ -179,7 +176,7 @@ p{
 	}
 	body {
 		font-size: 1em;
-		padding-top: 2em;
+		padding-top: 1.5em;
 	}
 	/*signup*/
 	.signup-img-block {
@@ -189,7 +186,7 @@ p{
 		height: auto;
 	}
 	.signup-form-block {
-		padding: 0.5em!important;
+		/*padding: 0.5em!important;*/
 		height: auto;
 	}
 	.sub-head {
