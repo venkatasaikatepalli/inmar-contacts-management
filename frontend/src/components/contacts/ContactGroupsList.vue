@@ -5,12 +5,12 @@
         <div class="col-md-7">
           <h3 class="black"><span class="fa fa-users"></span> Contacts Groups Management</h3>
         </div>
-        <div class="col-md-5 text-right">
+        <div class="col-md-5 text-right hidden-xs">
           <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New Group</button>
         </div>
       </div>
       <div class="full-block-table">
-        <div class="row contact-head">
+        <div class="row contact-head hidden-xs">
           <div class="col-md-6">
             <b>Name</b>
           </div>
@@ -18,6 +18,14 @@
             <b>Status</b>
           </div>
           <div class="col-md-1">
+          </div>
+        </div>
+        <div class="row visible-xs contact-head">
+          <div class="col-xs-8">
+            <h3><span class="fa fa-users"></span> Groups</h3>
+          </div>
+          <div class="col-xs-4">
+            <h2 class="text-right"><span class="fa fa-user-plus" @click.prevent="openDialog('add', null)"></span></h2>
           </div>
         </div>
         <div class="contacts-list">

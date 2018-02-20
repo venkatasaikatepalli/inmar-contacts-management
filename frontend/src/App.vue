@@ -56,7 +56,14 @@
         </ul>
       </div>
     </div>
-    <router-view @loginStatusChanged="loginStatusChanged"></router-view>
+    <!-- content -->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-sm-12 no-pad">
+          <router-view @loginStatusChanged="loginStatusChanged"></router-view>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,7 +124,7 @@ export default {
   border-radius: 0px;
 }
 .mobile-header {
-  padding: 0.7em 0em;
+  padding: 1em 0em;
   display: flex;
   align-items: center;
 }

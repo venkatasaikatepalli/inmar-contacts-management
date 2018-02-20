@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="full-block-table">
-      <div class="row contact-head">
+      <div class="row contact-head hidden-xs">
         <div class="col-md-4">
           <b>Name</b>
         </div>
@@ -12,6 +12,14 @@
           <b>Email Address</b>
         </div>
         <div class="col-md-1">
+        </div>
+      </div>
+      <div class="row visible-xs contact-head">
+        <div class="col-xs-8">
+          <h3><span class="fa fa-address-book"></span> Contacts</h3>
+        </div>
+        <div class="col-xs-4">
+          <h2 class="text-right"><span class="fa fa-user-plus" @click.prevent="openDialog('add', null)"></span></h2>
         </div>
       </div>
       <div class="contacts-list">
@@ -34,13 +42,19 @@
         </div>
       </div>
       <div class="row pagin">
-        <div class="col-md-3">
+        <div class="col-md-3 col-xs-6">
           <el-button size="mini" @click.prevent="prevPage">Previous Page</el-button>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="visible-xs col-xs-6 text-right">
+          <el-button size="mini" @click.prevent="nextPage">Next Page</el-button>
+        </div>
+        <div class="col-md-2 col-xs-6 text-center mb-top-1">
           <p><span>Current Page: <b>{{paginData.pageNum}}/{{paginData.pages}}</b></span></p>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-xs-6 visible-xs text-center mb-top-1">
+          <p class="text-center"><span>Total: <b>{{paginData.total}}</b></span></p>
+        </div>
+        <div class="col-md-2 text-center col-xs-12 mb-top-1">
           Per Page: <select  v-model="paginData.perPage" v-on:change="createPagin(contactsList)">
             <option value="5">5</option>
             <option value="10">10</option>
@@ -49,10 +63,10 @@
             <option value="100">100</option>
           </select>
         </div>
-        <div class="col-md-2 text-center">
+        <div class="col-md-2 hidden-xs text-center">
           <p class="text-center"><span>Total: <b>{{paginData.total}}</b></span></p>
         </div>
-        <div class="col-md-3 text-right">
+        <div class="col-md-3 text-right hidden-xs">
           <el-button size="mini" @click.prevent="nextPage">Next Page</el-button>
         </div>
       </div>

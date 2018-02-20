@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <div class="container-fluid">
-      <div class="row" style="display:flex;">
-        <div class="col-md-2 bg-blue no-pad">
+      <div class="row contact-flx">
+        <div class="col-md-2 bg-blue no-pad col-xs-12 hidden-xs">
           <!-- sidenav -->
           <ul class="side-nav">
             <li>
@@ -13,14 +13,23 @@
             </li>
           </ul>
         </div>
-        <div class="col-md-10 bg-grey min-95">
+        <div class="col-xs-12 visible-xs bg-blue no-pad">
+          <ul class="nav-list">
+            <li>
+              <p @click.prevent="tabChange('contacts')"><span class="fa fa-address-book"></span> Contacts ({{contactsList.length}})</p>
+            </li>
+            <li>
+              <p @click.prevent="tabChange('groups')"><span class="fa fa-users"></span> Groups ({{contactsGroupsList.length}})</p>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-10 bg-grey col-xs-12 min-95">
           <!-- full-block -->
-          <br>
           <!-- search bar -->
           <div class="form-group">
             <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search">
           </div>
-          <div v-if="tab === ''">
+          <div class="sticky-mbl" v-if="tab === ''">
             <!-- if search bar type -->
             <div v-if="resultList">
               <h3><b><span class="fa fa-address-book"></span> Contacts ({{resultList.length}})</b></h3>
@@ -32,12 +41,12 @@
             </div>
           </div>
           <!-- if no search usage tabs -->
-          <div  v-if="tab === 'contacts'">
+          <div class="sticky-mbl" v-if="tab === 'contacts'">
             <div class="row">
               <div class="col-md-7">
                 <h3 class="black"><span class="fa fa-address-book"></span> Contacts Management</h3>
               </div>
-              <div class="col-md-5 text-right">
+              <div class="col-md-5 text-right hidden-xs">
                 <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New Contact</button>
               </div>
             </div>
@@ -185,6 +194,9 @@ export default {
 }
 </script>
 <style scoped>
+.contact-flx {
+  display: flex;
+}
 .contacts-block {
   padding: 1em 2em;
   color: white;
@@ -225,5 +237,12 @@ export default {
 .srch-cnt-item {
   border-bottom: 1px solid rgba(0,0,0,0.2);
   padding: 0.5em;
+}
+
+@media (max-width: 767px) {
+.search-bar {
+    width: 95%!important;
+    margin:0px!important;
+  }
 }
 </style>
