@@ -5,8 +5,8 @@
         <div class="col-md-offset-4 col-md-4">
           <div class="login-form">
             <h3 class="sub-head blue text-center"><span class="fa fa-lock"></span> Login</h3>
+              <p class="error text-center"><b>{{error}}</b></p>
             <form >
-              <p class="error text-center" v-if="errMessage">{{errMessage}}</p>
               <div class="form-group">
                 <label for="exampleDropdownFormEmail1">Email address</label>
                 <input type="email" class="form-control" v-model="formData.email"  placeholder="email@inmar.com">
@@ -37,15 +37,15 @@ export default {
   data () {
     return {
       formData: {
-        email: 'venkatsaisoft@gmail.com',
-        password: '123'
+        email: 'venkatasaisoft@inmar.com',
+        password: '123456'
       },
-      error: {
+      errors: {
         email: '',
         password: ''
       },
       response: '',
-      errMessage: ''
+      error: ''
     }
   },
   created () {
@@ -67,10 +67,8 @@ export default {
             this.$emit('loginStatusChanged', true)
             this.$router.push('/dashboard')
           }
-        })
-        .catch((err) => {
-          if (err.response.data.status === 'failed') {
-            this.errMessage = err.response.data.message
+          if (resp.data.status === 'failed') {
+            this.error = resp.data.message
           }
         })
     }

@@ -14,6 +14,7 @@ require 'db.php';
 
 // instantiate the App object
 $app = new \Slim\App();
+// $app->response->headers->set('Content-Type', 'application/json');
 
 $app->get('/welcome', function() {
   echo "Welcome to Inmar API";
