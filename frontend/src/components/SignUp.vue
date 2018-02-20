@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-12 signup-img-block">
           <div class="row">
-            <div class="col-md-7 no-pad hidden-xs">
+            <div class="col-md-6 no-pad hidden-xs">
               <div class="history">
                 <div class="text-center">
                   <h3>Inmar Contacts</h3>
@@ -22,7 +22,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-5 signup-form-block text-left">
+            <div class="col-md-6 signup-form-block text-left">
               <h3 class="sub-head blue">Signup For New Account</h3>
               <form v-if="status === 'notlogin'">
                 <div class="row">

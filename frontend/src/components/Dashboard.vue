@@ -41,7 +41,6 @@
             <div class="stat">
               <h2>{{response.groups.contactgroups}}</h2>
               <h3><span class="fa fa-users"></span> Total Groups</h3>
-              
             </div>
           </div>
         </div>

@@ -26,8 +26,8 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav navbar-right" v-if="!loginStatus">
-              <li><router-link to="/login">Login</router-link></li>
-              <li><router-link to="/signup">SignUp</router-link></li>
+              <li><router-link to="/login"><span class="fa fa-lock"></span> Login</router-link></li>
+              <li><router-link to="/signup"><span class="fa fa-user"></span> SignUp</router-link></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" v-if="loginStatus">
               <li><router-link to="/dashboard"><span class="fa fa-tachometer"></span> Dashboard</router-link></li>
