@@ -31,13 +31,14 @@
 </template>
 <script>
 import axios from 'axios'
-import {constants} from '../constants.js'
+import auth from '@/services/authService'
+import {constants} from '@/constants.js'
 export default {
   data () {
     return {
       formData: {
-        email: '',
-        password: ''
+        email: 'venkatsaisoft@gmail.com',
+        password: '123'
       },
       error: {
         email: '',
@@ -48,19 +49,21 @@ export default {
     }
   },
   created () {
-    this.store()
+    this.checkAuthStatus()
   },
   methods: {
-    store () {
-      localStorage.setItem('storedData', 'sai')
+    checkAuthStatus () {
+      if (auth.checkAuthStatus) {
+        this.$router.push('/dashboard')
+      }
     },
     login () {
       axios.post(constants.login, this.formData)
         .then((resp) => {
           if (resp.data.status === 'success') {
             this.status = resp.data.status
-            // localStorage.setItem('token', resp.data.token)
-            localStorage.setItem('user_details', JSON.stringify(resp.data.userDetails))
+            auth.setAuthToken(resp.data.token)
+            auth.setUserDetails(resp.data.userDetails)
             this.$emit('loginStatusChanged', true)
             this.$router.push('/dashboard')
           }

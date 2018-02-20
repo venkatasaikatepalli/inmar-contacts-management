@@ -44,15 +44,16 @@ a{
 	text-decoration: none;
 	cursor: pointer;
 }
-a:hover{
+{
 	text-decoration:none;
 }
-a:active{
+{
 	text-decoration: none;
 
 }
-a:visited,a:focus{
+a:visited, a:focus, a:active, a:hover{
 	text-decoration: none !important;
+	background-color: transparent!important;
 }
 p{
 	text-align: justify;

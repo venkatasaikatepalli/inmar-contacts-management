@@ -60,6 +60,7 @@
 </template>
 <script>
 import axios from 'axios'
+import auth from '@/services/authService'
 import {constants} from '../constants.js'
 import ContactsList from '@/components/contacts/ContactsList'
 import ManageContact from '@/components/contacts/ManageContact'
@@ -77,9 +78,9 @@ export default {
       searchContactsList: [],
       resultList: '',
       resultGroupsList: '',
-      userId: 102,
+      userId: auth.getUserId(),
       formData: {
-        u_id: '102'
+        u_id: auth.getUserId()
       },
       contactsList: [],
       contactsGroupsList: [],

@@ -18,25 +18,11 @@
             <ul class="nav navbar-nav navbar-right" v-if="!loginStatus">
               <li><router-link to="/login">Login</router-link></li>
               <li><router-link to="/signup">SignUp</router-link></li>
-              <!-- <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li><a href="#">Separated link</a></li>
-                </ul>
-              </li> -->
             </ul>
-            <!-- <form class="navbar-form navbar-left search-block" role="search">
-              <div class="form-group">
-                <input type="text" class="form-control" v-on="keyup:makeAlert | key enter" placeholder="Search">
-              </div>
-            </form> -->
             <ul class="nav navbar-nav navbar-right" v-if="loginStatus">
               <li><router-link to="/dashboard"><span class="fa fa-tachometer"></span> Dashboard</router-link></li>
               <li><router-link to="/contacts"><span class="fa fa-users"></span> Contacts</router-link></li>
-              <li><router-link to="/logout"><span class="fa fa-power-off"></span> Logout</router-link></li>
+              <li><a v-on:click="logout()"><span class="fa fa-power-off"></span> Logout</a></li>
             </ul>
           </div><!-- /.navbar-collapse -->
         </div>
@@ -47,16 +33,22 @@
 </template>
 
 <script>
+import auth from '@/services/authService'
 export default {
   name: 'App',
   data () {
     return {
-      loginStatus: true
+      loginStatus: auth.getAuthStatus()
     }
   },
   methods: {
     loginStatusChanged (value) {
       this.loginStatus = value
+    },
+    logout () {
+      if (auth.logout()) {
+        this.$router.push('/login')
+      }
     }
   }
 }

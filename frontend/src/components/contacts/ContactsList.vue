@@ -303,13 +303,4 @@ export default {
     color: rgba(0,0,0,0.4);
     font-size: 0.9em;
   }
-  .pagin {
-    background-color: white;
-    margin:0em;
-    padding: 1em;
-    border:1px solid rgba(0,0,0,0.10);
-  }
-  .full-block-table{
-    box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.10);
-  }
 </style>
