@@ -2,7 +2,7 @@
   <div class="welcome">
     <div class="full-height">
       <div class="cnt text-center full-width">
-        <img src="@/assets/header-logo.svg" height="100px" alt="">
+        <img src="@/assets/header-logo.svg" class="c-logo" alt="">
         <br><br>
         <p class="max-width-70">Anyone who has redeemed a coupon, filled a prescription or returned a product, has touched Inmar. We apply technology and data science to improve outcomes for consumers and those who serve them.</p>
         <ul class="list-inline">
@@ -52,5 +52,13 @@ export default {
   display: table;
   margin:1em auto;
   text-align: center;
+}
+.c-logo {
+  height: 100px;
+}
+@media (max-width: 767px) {
+  .c-logo {
+    height: 40px;
+  }
 }
 </style>

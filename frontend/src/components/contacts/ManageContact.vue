@@ -4,14 +4,17 @@
     <div class="form-group">
       <label for="">Name</label>
       <input type="text" name="name" v-model="contactData.name">
+      <span class="error" v-if="errors.name">{{errors.name}}</span>
     </div>
     <div class="form-group">
       <label for="">Mobile</label>
       <input type="number" name="name" v-model="contactData.mobile">
+      <span class="error" v-if="errors.mobile">{{errors.mobile}}</span>
     </div>
     <div class="form-group">
       <label for="">Email</label>
-      <input type="text" name="name" v-model="contactData.email">
+      <input type="email" name="name" v-model="contactData.email">
+      <span class="error" v-if="errors.email">{{errors.email}}</span>
     </div>
     <div class="form-group">
       <label for="">Status</label>
@@ -39,29 +42,47 @@ export default {
   props: ['contactData', 'formTitle', 'role', 'contactsGroupsList'],
   data () {
     return {
-      response: ''
+      response: '',
+      errors: {
+        name: '',
+        email: '',
+        mobile: ''
+      }
     }
   },
   methods: {
     manageContact () {
-      axios.post(constants.manage_contact, this.contactData)
-        .then((resp) => {
-          if (resp.data.status === 'success') {
-            this.$notify({
-              title: 'Success',
-              message: resp.data.message,
-              type: 'success'
-            })
-            this.$emit('contactInfoChanged')
-          }
-        })
-        .catch((err) => {
-          this.$notify({
-            title: 'Failed',
-            message: err.response.data.message,
-            type: 'error'
+      if (this.validate()) {
+        axios.post(constants.manage_contact, this.contactData)
+          .then((resp) => {
+            if (resp.data.status === 'success') {
+              this.$notify({
+                title: 'Success',
+                message: resp.data.message,
+                type: 'success'
+              })
+              this.$emit('contactInfoChanged')
+            }
           })
-        })
+          .catch((err) => {
+            this.$notify({
+              title: 'Failed',
+              message: err.response.data.message,
+              type: 'error'
+            })
+          })
+      }
+    },
+    validate () {
+      if (this.contactData.name === '') {
+        this.errors.name = 'Name field is required'
+      } else if (this.contactData.mobile === '') {
+        this.errors.mobile = 'Mobile field is required'
+      } else if (this.contactData.email === '') {
+        this.errors.email = 'Email field is required'
+      } else {
+        return true
+      }
     }
   }
 }

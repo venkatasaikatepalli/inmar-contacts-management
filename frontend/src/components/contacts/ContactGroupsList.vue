@@ -82,6 +82,9 @@
         <div class="col-md-6">
           <h3 class="text-center"><b><span class="fa fa-users"></span> {{contactsGroupsData.name}}</b></h3>
         </div>
+        <div class="col-md-3 text-right">
+          <button class="btn btn-primary" @click.prevent="openContactDialog('add', null)"><span class="fa fa-user-plus"></span> Contact to Group</button>
+        </div>
       </div>
       <contacts-list :contacts-list="resultList" :contacts-groups-list="contactsGroupsList" @contactInfoChanged="contactGroupInfoChanged"></contacts-list>
     </div>
@@ -92,22 +95,33 @@
       width="30%">
       <manage-group :form-title="formTitle" :contacts-group-data="contactsGroupsData" :role="role" @contactGroupInfoChanged="contactGroupInfoChanged"></manage-group>
     </el-dialog>
+    <!-- new contact -->
+    <el-dialog
+      title=""
+      :visible.sync="contactDialogVisible"
+      width="30%">
+      <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role" :contacts-groups-list="contactsGroupsList"></manage-contact>
+    </el-dialog>
   </div>
 </template>
 <script>
 import {constants} from '@/constants.js'
 import axios from 'axios'
 import auth from '@/services/authService'
+import ManageContact from '@/components/contacts/ManageContact'
 import ManageGroup from '@/components/contacts/ManageGroup'
 import ContactsList from '@/components/contacts/ContactsList'
 export default {
   components: {
     ManageGroup,
-    ContactsList
+    ContactsList,
+    ManageContact
   },
   props: ['contactsGroupsList', 'contactsList'],
   data () {
     return {
+      contactDialogVisible: false,
+      contactData: [],
       response: '',
       dialogVisible: false,
       fullViewVisible: false,
@@ -205,6 +219,12 @@ export default {
             type: 'error'
           })
         })
+    },
+    openContactDialog () {
+      this.contactDialogVisible = true
+      this.contactData.group_id = this.contactsGroupsData.id
+      this.contactData.status = 'Active'
+      this.formTitle = 'Add Contact Info'
     },
     openFullView (data) {
       this.viewRole = 'groupContacts'
