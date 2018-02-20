@@ -20,32 +20,45 @@ $app->get('/welcome', function() {
   echo "Welcome to Inmar API";
 });
 
+// Rest apis
+$app->post('/login', 'login'); //login
+$app->post('/signup', 'signup'); //signup
+
+
 // signup
-$app->post('/signup', function($request){
+function signup($request){
    $input = $request->getParsedBody();
-   $firstname = $input['firstname'];
-   $lastname = $input['lastname'];
+   $firstname = $input['firstName'];
+   $lastname = $input['lastName'];
    $email = $input['email'];
    $password = $input['password'];
    $aadharno = $input['aadharno'];
-   // $date = new DateTime();
-   // $date->format('U = Y-m-d H:i:s');
-   $sql = "INSERT INTO `users`(`firstname`, `lastname`, `email`, `password`, `aadharno`, `account_status`) VALUES ('$firstname','$lastname','$email', '$password', '$aadharno',1)";
-   try {
-     $db = getDB();
-     if($stmt = $db->query($sql)==true)
-     {
-      $data = array('status' => 'success', 'message' => 'Registered Sucessfully, You can Login Now');
-     }else
-      $data = array('status' => 'failed', 'message' => 'Failed Try Again');
-     $db = null;
-     echo json_encode($data);
-   } catch(PDOException $e) {
-     echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+   if (checkEmail($email)) {
+     # code...
+     $sql = "INSERT INTO `users`(`firstname`, `lastname`, `email`, `password`, `aadharno`, `account_status`) VALUES ('$firstname','$lastname','$email', '$password', '$aadharno',1)";
+     try {
+       $db = getDB();
+       if($stmt = $db->query($sql)==true)
+       {
+        $data = array('status' => 'success', 'message' => 'Registered Sucessfully, You can Login Now');
+       }else
+        $data = array('status' => 'failed', 'message' => 'Failed Try Again');
+       $db = null;
+       echo json_encode($data);
+     } catch(PDOException $e) {
+       echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+     }
+   } else {
+    $data = array('status' => 'failed', 'errors' => [
+      'email' => 'Email Already Taken, Try with another Email'
+      ]);
+      echo json_encode($data);
    }
-});
 
-$app->post('/login',function($request,$response){
+   
+};
+// login
+function login($request,$response){
   $input = $request->getParsedBody();
   $email = $input['email'];
   $password = $input['password'];
@@ -72,7 +85,25 @@ $app->post('/login',function($request,$response){
   } catch(PDOException $e) {
     echo '{"error":{"text":'. $e->getMessage() .'}}'; 
   }
-});
+};
+// check username
+function checkEmail($email){
+  $sql = "SELECT * FROM `users` where email='$email'";
+  try {
+    $db = getDB();
+    $stmt = $db->query($sql);  
+    if ($users = $stmt->fetchAll(PDO::FETCH_OBJ)) {
+      # code...
+      $db = null;
+      return false;
+    } else {
+      return true;
+    }
+  } catch(PDOException $e) {
+    echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+  }
+};
+
 
 // contacts by id
 $app->post('/contacts', function (Request $request, Response $response) {
