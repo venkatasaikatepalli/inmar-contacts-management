@@ -9,29 +9,52 @@
           <button class="btn btn-primary" @click.prevent="openDialog('add', null)">+ Add New Group</button>
         </div>
       </div>
-      <div class="row contact-head">
-        <div class="col-md-6">
-          <b>Name</b>
-        </div>
-        <div class="col-md-5">
-          <b>Status</b>
-        </div>
-        <div class="col-md-1">
-        </div>
-      </div>
-      <div class="contacts-list">
-        <div class="row contact-item" v-for="item in contactsGroupsList" :key="item.name" >
-          <div class="col-md-6 c-name" @click.prevent="openFullView(item)">
-            {{item.name}}
+      <div class="full-block-table">
+        <div class="row contact-head">
+          <div class="col-md-6">
+            <b>Name</b>
           </div>
-          <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
-            {{item.status}}
+          <div class="col-md-5">
+            <b>Status</b>
           </div>
-          <div class="col-md-1 text-right">
-            <ul class="list-inline">
-              <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
-              <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
-            </ul>
+          <div class="col-md-1">
+          </div>
+        </div>
+        <div class="contacts-list">
+          <div class="row contact-item" v-for="item in pageinList" :key="item.name" >
+            <div class="col-md-6 c-name" @click.prevent="openFullView(item)">
+              {{item.name}}
+            </div>
+            <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
+              {{item.status}}
+            </div>
+            <div class="col-md-1 text-right">
+              <ul class="list-inline">
+                <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
+                <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row pagin">
+          <div class="col-md-3">
+            <el-button size="mini" @click.prevent="prevPage">Previous Page</el-button>
+          </div>
+          <div class="col-md-2 text-center">
+            <p><span>Current Page: <b>{{paginData.pageNum}}/{{paginData.pages}}</b></span></p>
+          </div>
+          <div class="col-md-2 text-center">
+            Per Page: <select  v-model="paginData.perPage" v-on:change="createPagin(contactsGroupsList)">
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </select>
+          </div>
+          <div class="col-md-2 text-center">
+            <p class="text-center"><span>Total: <b>{{paginData.total}}</b></span></p>
+          </div>
+          <div class="col-md-3 text-right">
+            <el-button size="mini" @click.prevent="nextPage">Next Page</el-button>
           </div>
         </div>
       </div>
@@ -77,7 +100,22 @@ export default {
       viewRole: 'groups',
       role: '',
       userId: '102',
-      resultList: []
+      resultList: [],
+      paginData: {
+        perPage: 5,
+        total: 0,
+        pages: 0,
+        pageNum: 1
+      },
+      pageinList: []
+    }
+  },
+  created () {
+    this.createPagin(this.contactsGroupsList)
+  },
+  watch: {
+    contactsGroupsList: function () {
+      this.createPagin(this.contactsGroupsList)
     }
   },
   methods: {
@@ -166,6 +204,52 @@ export default {
           }
         }
       }
+    },
+    createPagin (datalist) {
+      let len = datalist.length
+      this.paginData.total = len
+      this.paginData.pageNum = 1
+      if (len < this.paginData.perPage) {
+        this.paginData.pages = 1
+        this.paginate(datalist)
+      } else {
+        if (len % this.paginData.perPage > 0) {
+          this.paginData.pages = parseInt(len / this.paginData.perPage) + 1
+          // this.paginData.pages = len / this.paginData.perPage
+        } else {
+          this.paginData.pages = len / this.paginData.perPage
+        }
+        if (this.paginData.total > 0) {
+          this.paginate(datalist)
+        }
+      }
+    },
+    nextPage () {
+      if (this.paginData.pageNum < this.paginData.pages) {
+        this.paginData.pageNum += 1
+        this.paginate(this.contactsList)
+      }
+    },
+    prevPage () {
+      if (this.paginData.pageNum > 1) {
+        this.paginData.pageNum -= 1
+        this.paginate(this.contactsList)
+      }
+    },
+    paginate (datalist) {
+      let len = datalist.length
+      let start = (this.paginData.pageNum - 1) * this.paginData.perPage
+      let end = this.paginData.pageNum * this.paginData.perPage
+      this.pageinList = []
+      if (end < len) {
+        for (var i = start; i < end; i++) {
+          this.pageinList.push(datalist[i])
+        }
+      } else {
+        for (var j = start; j < this.paginData.total; j++) {
+          this.pageinList.push(datalist[j])
+        }
+      }
     }
   }
 }
@@ -194,7 +278,6 @@ export default {
     max-height: 80vh;
     overflow-y: scroll;
     width: 100%;
-    box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.10);
     font-size: 0.9em;
     letter-spacing: 1px;
   }
