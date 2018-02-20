@@ -306,7 +306,7 @@ export default {
 </script>
 <style scoped>
   .contact-head {
-    background-color: #3dae2b;
+    background-color: #53ba4d;
     margin:0;
     padding: 1em;
   }

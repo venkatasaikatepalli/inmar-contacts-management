@@ -5,7 +5,7 @@
         <div class="col-md-3">
           <b>Name </b>
           <span v-if="sortkey.name === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('name')"></span>
-          <span v-if="sortkey.name === ''" class="fa fa-sort-down f-right" @click.prevent="sort('name')"></span>
+          <span v-if="sortkey.name === ''" class="fa fa-sort-down f-right" @click.prevent="sort('name')"></span><br>
           <input type="text" class="table-search-bar" v-model="searchKey.name" v-on:keyup="filterMe('name')" placeholder="Search">
         </div>
         <div class="col-md-3">
@@ -321,7 +321,7 @@ export default {
 </script>
 <style scoped>
   .contact-head {
-    background-color: #3dae2b;
+    background-color: #53ba4d;
     margin:0;
     padding: 1em;
   }

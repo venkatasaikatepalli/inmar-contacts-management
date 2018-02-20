@@ -41,13 +41,6 @@ a{
 	text-decoration: none;
 	cursor: pointer;
 }
-{
-	text-decoration:none;
-}
-{
-	text-decoration: none;
-
-}
 a:visited, a:focus, a:active, a:hover{
 	text-decoration: none !important;
 	background-color: transparent!important;
@@ -90,11 +83,14 @@ p{
 .black {
 	color: black;
 }
+.green {
+	color: #53ba4d;
+}
 .bg-blue {
 	background-color: #0071ce;
 }
 .bg-white {
-	/*background-color: white;*/
+	background-color: white;
 }
 .bg-grey {
 	/*background-color: #E7E5DF;*/

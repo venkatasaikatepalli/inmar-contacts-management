@@ -61,7 +61,7 @@
                     <div class="form-item">
                       <label for="firstName">Password</label>
                       <input type="password" name="password" v-model="formData.password" placeholder="Enter Password">
-                      <p class="error" v-if="error.password" v-for="item in error.password">{{item}}</p><br>
+                      <p class="error" v-if="error.password" :key="item" v-for="item in error.password">{{item}}</p><br>
                     </div>
                   </div>
                 </div>
@@ -147,33 +147,33 @@ export default {
         this.error.email = 'Email is required'
       } else if (!this.validatePassword()) {
         // this.error.password = 'Password is required'
-      } else if (this.formData.aadharno === '' ) {
+      } else if (this.formData.aadharno === '') {
         this.error.aadharno = 'Aadhar no is required'
-      } else if (this.formData.aadharno.length != 12) {
+      } else if (this.formData.aadharno.length !== 12) {
         this.error.aadharno = 'Please Enter Valid Aadhar no'
       } else {
         return true
       }
     },
     validatePassword () {
-        var p = this.formData.password
-        this.error.password= []
-        if (p.length < 8) {
-            this.error.password.push("Your password must be at least 8 characters.")
-        }
-        if (p.search(/[a-z]/i) < 0) {
-            this.error.password.push("Your password must contain at least one letter.")
-        }
-        if (p.search(/[A-Z]/i) < 0) {
-            this.error.password.push("Your password must contain at least Uppercase. letter.")
-        }
-        if (p.search(/[0-9]/) < 0) {
-            this.error.password.push("Your password must contain at least one digit.") 
-        }
-        if (this.error.password.length > 0) {
-            return false
-        }
-        return true
+      var p = this.formData.password
+      this.error.password = []
+      if (p.length < 8) {
+        this.error.password.push('Your password must be at least 8 characters.')
+      }
+      if (p.search(/[a-z]/i) < 0) {
+        this.error.password.push('Your password must contain at least one letter.')
+      }
+      if (p.search(/[A-Z]/i) < 0) {
+        this.error.password.push('Your password must contain at least Uppercase. letter.')
+      }
+      if (p.search(/[0-9]/) < 0) {
+        this.error.password.push('Your password must contain at least one digit.')
+      }
+      if (this.error.password.length > 0) {
+        return false
+      }
+      return true
     },
     redirectLogin () {
       this.$router.push('/login')
@@ -197,7 +197,7 @@ export default {
 .form-item{
   padding: 1em;
 }
-.form-item label{ 
+.form-item label{
   font-size: 0.7em;
 }
 .form-item input{
