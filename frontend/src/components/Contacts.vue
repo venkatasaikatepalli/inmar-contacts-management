@@ -6,29 +6,32 @@
           <!-- sidenav -->
           <ul class="side-nav">
             <li>
-              <p @click.prevent="tab = 'contacts'"><span class="fa fa-address-book"></span> Contacts ({{contactsList.length}})</p>
+              <p @click.prevent="tabChange('contacts')"><span class="fa fa-address-book"></span> Contacts ({{contactsList.length}})</p>
             </li>
             <li>
-              <p @click.prevent="tab = 'groups'"><span class="fa fa-users"></span> Contact Groups ({{contactsGroupsList.length}})</p>
+              <p @click.prevent="tabChange('groups')"><span class="fa fa-users"></span> Contact Groups ({{contactsGroupsList.length}})</p>
             </li>
           </ul>
         </div>
         <div class="col-md-10 bg-grey min-95">
           <!-- full-block -->
           <br>
-          <div class="form-group hidden">
+          <!-- search bar -->
+          <div class="form-group">
             <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search">
           </div>
-          <div v-if="resultList">
-            <h3><b><span class="fa fa-address-book"></span> Contacts ({{resultList.length}})</b></h3>
-           <contacts-list :contacts-list="resultList" @contactInfoChanged="getContactsList"></contacts-list>
+          <div v-if="tab === ''">
+            <!-- if search bar type -->
+            <div v-if="resultList">
+              <h3><b><span class="fa fa-address-book"></span> Contacts ({{resultList.length}})</b></h3>
+             <contacts-list :contacts-list="resultList" @contactInfoChanged="getContactsList"></contacts-list>
+            </div>
+            <div v-if="resultGroupsList">
+              <h3><b><span class="fa fa-users"></span> Contacts Groups ({{resultGroupsList.length}})</b></h3>
+              <contacts-groups-list :contacts-groups-list="resultGroupsList" @contactGroupInfoChanged="getContactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
+            </div>
           </div>
-          <div v-if="resultGroupsList">
-            <h3><b><span class="fa fa-users"></span> Contacts Groups ({{resultGroupsList.length}})</b></h3>
-            <contacts-groups-list :contacts-groups-list="resultGroupsList" @contactGroupInfoChanged="getContactsGroupsList" @contactInfoChanged="getContactsList"></contacts-groups-list>
-          </div>
-
-          <!-- tabs -->
+          <!-- if no search usage tabs -->
           <div  v-if="tab === 'contacts'">
             <div class="row">
               <div class="col-md-7">
@@ -46,7 +49,6 @@
         </div>
       </div>
     </div>
-
     <!-- contact dialog -->
     <el-dialog
       title=""
@@ -115,6 +117,23 @@ export default {
       }
       // string1.indexOf(string2) >= 0
     },
+    filterContact () {
+      this.tab = ''
+      this.resultList = this.filter(this.contactsList, name, this.searchKey)
+      this.resultGroupsList = this.filter(this.contactsGroupsList, name, this.searchKey)
+    },
+    filter (datalist, searchKey, searchValue) {
+      let result = []
+      var len = datalist.length
+      if (len > 0) {
+        for (var i = 0; i < len; i++) {
+          if (this.datalist[i][searchKey].toLowerCase().indexOf(searchValue) >= 0) {
+            result.push(datalist[i])
+          }
+        }
+        return result
+      }
+    },
     getContactsList () {
       axios.post(constants.get_contacts, this.formData)
         .then((resp) => {
@@ -156,6 +175,10 @@ export default {
     contactAdded () {
       this.dialogVisible = false
       this.getContactsList()
+    },
+    tabChange (value) {
+      this.tab = value
+      this.searchKey = ''
     }
   }
 }

@@ -1,37 +1,64 @@
 <template>
   <div>
-    <div class="row contact-head">
-      <div class="col-md-4">
-        <b>Name</b>
+    <div class="full-block-table">
+      <div class="row contact-head">
+        <div class="col-md-4">
+          <b>Name</b>
+        </div>
+        <div class="col-md-3">
+          <b>Mobile Number</b>
+        </div>
+        <div class="col-md-4">
+          <b>Email Address</b>
+        </div>
+        <div class="col-md-1">
+        </div>
       </div>
-      <div class="col-md-3">
-        <b>Mobile Number</b>
+      <div class="contacts-list">
+        <div class="row contact-item" v-if="pageinList" v-for="item in pageinList" :key="item.name">
+          <div class="col-md-4 c-name" @click.prevent="openFullView(item)">
+            {{item.name}}
+          </div>
+          <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
+            {{item.mobile}}
+          </div>
+          <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
+            {{item.email}}
+          </div>
+          <div class="col-md-1 text-right">
+            <ul class="list-inline float-right">
+              <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
+              <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
+            </ul>
+          </div>
+        </div>
       </div>
-      <div class="col-md-4">
-        <b>Email Address</b>
-      </div>
-      <div class="col-md-1">
+      <div class="row pagin">
+        <div class="col-md-3">
+          <el-button size="mini" @click.prevent="prevPage">Previous Page</el-button>
+        </div>
+        <div class="col-md-2 text-center">
+          <p><span>Current Page: <b>{{paginData.pageNum}}/{{paginData.pages}}</b></span></p>
+        </div>
+        <div class="col-md-2 text-center">
+          Per Page: <select  v-model="paginData.perPage" v-on:change="createPagin(contactsList)">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        <div class="col-md-2 text-center">
+          <p class="text-center"><span>Total: <b>{{paginData.total}}</b></span></p>
+        </div>
+        <div class="col-md-3 text-right">
+          <el-button size="mini" @click.prevent="nextPage">Next Page</el-button>
+        </div>
       </div>
     </div>
-    <div class="contacts-list">
-      <div class="row contact-item" v-for="item in contactsList" :key="item.name">
-        <div class="col-md-4 c-name" @click.prevent="openFullView(item)">
-          {{item.name}}
-        </div>
-        <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
-          {{item.mobile}}
-        </div>
-        <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
-          {{item.email}}
-        </div>
-        <div class="col-md-1 text-right">
-          <ul class="list-inline float-right">
-            <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
-            <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+      <br><br><br><br>
+      <br><br><br><br>
     <!-- contact dialog -->
     <el-dialog
       title=""
@@ -79,7 +106,26 @@ export default {
       contactData: {},
       formTitle: '',
       role: '',
-      userId: '102'
+      userId: '102',
+      paginData: {
+        perPage: 5,
+        total: 0,
+        pages: 0,
+        pageNum: 1
+      },
+      perPage: 5,
+      total: '',
+      pages: 10,
+      pageNum: 1,
+      pageinList: []
+    }
+  },
+  created () {
+    this.createPagin(this.contactsList)
+  },
+  watch: {
+    contactsList: function () {
+      this.createPagin(this.contactsList)
     }
   },
   methods: {
@@ -154,6 +200,51 @@ export default {
     contactInfoChanged () {
       this.dialogVisible = false
       this.$emit('contactInfoChanged')
+    },
+    createPagin (datalist) {
+      let len = datalist.length
+      this.paginData.total = len
+
+      if (len < this.paginData.perPage) {
+        this.paginData.pages = 1
+        this.datalist = this.contactsList
+      } else {
+        if (len % this.paginData.perPage > 0) {
+          this.paginData.pages = parseInt(len / this.paginData.perPage) + 1
+        } else {
+          this.paginData.pages = len / this.perPage
+        }
+        if (this.paginData.total > 0) {
+          this.paginate(datalist)
+        }
+      }
+    },
+    nextPage () {
+      if (this.paginData.pageNum <= this.paginData.pages) {
+        this.paginData.pageNum += 1
+        this.paginate(this.contactsList)
+      }
+    },
+    prevPage () {
+      if (this.paginData.pageNum > 1) {
+        this.paginData.pageNum -= 1
+        this.paginate(this.contactsList)
+      }
+    },
+    paginate (datalist) {
+      let len = datalist.length
+      let start = (this.paginData.pageNum - 1) * this.paginData.perPage
+      let end = this.paginData.pageNum * this.paginData.perPage
+      this.pageinList = []
+      if (end < len) {
+        for (var i = start; i < end; i++) {
+          this.pageinList.push(datalist[i])
+        }
+      } else {
+        for (var j = start; j < len; j++) {
+          this.pageinList.push(datalist[i])
+        }
+      }
     }
   }
 }
@@ -179,10 +270,9 @@ export default {
     color: white;
   }
   .contacts-list {
-    max-height: 80vh;
+    max-height: 60vh;
     overflow-y: scroll;
     width: 100%;
-    box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.10);
     font-size: 0.9em;
     letter-spacing: 1px;
   }
@@ -211,5 +301,14 @@ export default {
   .nm{
     color: rgba(0,0,0,0.4);
     font-size: 0.9em;
+  }
+  .pagin {
+    background-color: white;
+    margin:0em;
+    padding: 1em;
+    border:1px solid rgba(0,0,0,0.10);
+  }
+  .full-block-table{
+    box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.10);
   }
 </style>
