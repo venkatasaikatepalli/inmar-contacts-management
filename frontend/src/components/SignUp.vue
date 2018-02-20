@@ -99,15 +99,15 @@ export default {
     return {
       error: [],
       email: {
-        name: 'sai',
+        name: '',
         domain: '@inmar.com'
       },
       formData: {
-        firstName: 'Venkata',
-        lastName: 'sai',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
-        aadharno: '123456789012'
+        aadharno: ''
       },
       response: '',
       status: 'notlogin'

@@ -6,8 +6,8 @@
         <br><br>
         <p class="max-width-70">Anyone who has redeemed a coupon, filled a prescription or returned a product, has touched Inmar. We apply technology and data science to improve outcomes for consumers and those who serve them.</p>
         <ul class="list-inline">
-          <li><button class="btn btn-success" @click.prevent="open('login')">Signup</button></li>
-          <li><button class="btn btn-primary" to="\signup">Login</button></li>
+          <li><button class="btn btn-success" @click.prevent="open('signup')">Signup</button></li>
+          <li><button class="btn btn-primary"  @click.prevent="open('login')">Login</button></li>
         </ul>
       </div>
     </div>
