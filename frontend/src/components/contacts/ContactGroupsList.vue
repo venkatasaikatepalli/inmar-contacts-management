@@ -12,10 +12,16 @@
       <div class="full-block-table">
         <div class="row contact-head hidden-xs">
           <div class="col-md-6">
-            <b>Name</b>
+            <b>Name</b><br>
+            <!-- <span v-if="sortkey.name === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('name')"></span>
+            <span v-if="sortkey.name === ''" class="fa fa-sort-down f-right" @click.prevent="sort('name')"></span> -->
+            <input type="text" class="table-search-bar" v-model="searchKey.name" v-on:keyup="filterMe('name')" placeholder="Search">
           </div>
           <div class="col-md-5">
-            <b>Status</b>
+            <b>Status</b><br>
+            <!-- <span v-if="sortkey.name === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('name')"></span>
+            <span v-if="sortkey.name === ''" class="fa fa-sort-down f-right" @click.prevent="sort('name')"></span> -->
+            <input type="text" class="table-search-bar" v-model="searchKey.status" v-on:keyup="filterMe('status')" placeholder="Search">
           </div>
           <div class="col-md-1">
           </div>
@@ -117,7 +123,15 @@ export default {
         pages: 0,
         pageNum: 1
       },
-      pageinList: []
+      pageinList: [],
+      searchKey: {
+        name: '',
+        status: ''
+      },
+      sortKey: {
+        name: '',
+        status: ''
+      }
     }
   },
   created () {
@@ -261,6 +275,31 @@ export default {
           this.pageinList.push(datalist[j])
         }
       }
+    },
+    filterMe (value) {
+      this.createPagin(this.filter(this.contactsGroupsList, value, this.searchKey[value]))
+    },
+    filter (datalist, searchKey, searchValue) {
+      let result = []
+      var len = datalist.length
+      if (len > 0) {
+        for (var i = 0; i < len; i++) {
+          if (datalist[i][searchKey].toLowerCase().indexOf(searchValue) >= 0) {
+            result.push(datalist[i])
+          }
+        }
+        return result
+      }
+    },
+    sort (value) {
+      this.sortkey[value] = 'yes'
+      this.createPagin(this.sortByKey(this.contactsList, value))
+    },
+    sortByKey (array, key) {
+      return array.sort(function (a, b) {
+        var x = a[key]; var y = b[key]
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0))
+      })
     }
   }
 }
