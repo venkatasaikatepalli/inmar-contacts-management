@@ -133,6 +133,30 @@ $app->post('/contacts', function (Request $request, Response $response) {
   }
 });
 
+// stats
+$app->post('/get_stats', function (Request $request, Response $response) {
+  $input = $request->getParsedBody();
+  $u_id = $input['u_id'];
+  $sql = "SELECT count(*) as contacts FROM `contacts` WHERE user_id=$u_id";
+  try {
+    $db = getDB();
+    $stmt = $db->query($sql);  
+    $contacts = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+
+
+    $data = array(
+      'status' => 'success', 
+      'conatactslist' => $contacts, 
+      'groups' => getGroups($u_id)[0]
+     );
+    echo json_encode($data);
+  } catch(PDOException $e) {
+  //     //error_log($e->getMessage(), 3, '/var/tmp/php.log');
+    echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+  }
+});
+
 // manage contact add edit
 $app->post('/manage_contact', function($request){
    $input = $request->getParsedBody();
@@ -140,11 +164,12 @@ $app->post('/manage_contact', function($request){
    $mobile = $input['mobile'];
    $email = $input['email'];
    $group_id = $input['group_id'];
+   $status = $input['status'];
    // if data contains id it is update
    if ($input['id']) {
      # code...
     $id=$input['id'];
-   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile', `email`='$email',`group_id`=$group_id WHERE id=$id";
+   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile', `status`=$status, `email`='$email',`group_id`=$group_id WHERE id=$id";
    try {
      $db = getDB();
      if($stmt = $db->query($sql)==true)
@@ -161,7 +186,7 @@ $app->post('/manage_contact', function($request){
    } else {
     // else add new
     $u_id = $input['u_id'];
-    $sql = "INSERT INTO `contacts`(`name`, `mobile`, `email`, `group_id`, `user_id`) VALUES ('$name','$mobile', '$email', '$group_id', $u_id)";
+    $sql = "INSERT INTO `contacts`(`name`, `mobile`, `email`, `group_id`, `user_id`, `status`) VALUES ('$name','$mobile', '$email', '$group_id', $u_id, $status)";
     try {
       $db = getDB();
       if($stmt = $db->query($sql)==true)
@@ -309,6 +334,20 @@ $app->post('/users', function (Request $request, Response $response) {
   }
 });
 
+function getGroups ($u_id) {
+  $sql = "SELECT count(*) as contactgroups FROM `contact_groups` WHERE user_id=$u_id";
+  try {
+    $db = getDB();
+    $stmt = $db->query($sql);  
+    $contacts = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $db = null;
+    return $contacts;
+
+  } catch(PDOException $e) {
+  //     //error_log($e->getMessage(), 3, '/var/tmp/php.log');
+    echo '{"error":{"text":'. $e->getMessage() .'}}'; 
+  }
+}
 
 
 

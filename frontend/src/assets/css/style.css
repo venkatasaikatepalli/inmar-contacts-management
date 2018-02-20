@@ -87,6 +87,9 @@ p{
 .yellow {
 	color: #F8C030;
 }
+.red{
+	color: red;
+}
 .black {
 	color: black;
 }
@@ -96,6 +99,9 @@ p{
 .bg-grey {
 	/*background-color: #E7E5DF;*/
 	background-color: #FAFAF9;
+}
+.fa-pencil{
+	color: orange;
 }
 /*headings*/
 .sub-head {
@@ -140,6 +146,14 @@ p{
 }
 .full-block-table{
   box-shadow: 1px 1px 10px 1px rgba(0,0,0,0.10);
+}
+.table-search-bar {
+	color: white;
+	background-color: transparent;
+	border:none;
+	border-bottom: 1px solid orange;
+	outline: none;
+	font-weight: 0.8em;
 }
 
 

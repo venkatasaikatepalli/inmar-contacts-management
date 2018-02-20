@@ -14,6 +14,13 @@
       <input type="text" name="name" v-model="contactData.email">
     </div>
     <div class="form-group">
+      <label for="">Status</label>
+      <select name="" id="" v-model="contactData.status">
+        <option value="1">Active</option>
+        <option value="0">Inactive</option>
+      </select>
+    </div>
+    <div class="form-group">
       <label for="">Group</label>
       <select name="" v-model="contactData.group_id" id="">
         <option v-for="item in contactsGroupsList" :key="item.name" v-bind:value="item.id">{{item.name}}</option>

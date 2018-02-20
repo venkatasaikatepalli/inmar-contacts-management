@@ -27,7 +27,7 @@
           <!-- full-block -->
           <!-- search bar -->
           <div class="form-group">
-            <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search">
+            <input type="text" class="form-control search-bar" v-model="searchKey" v-on:keyup="filterContacts" placeholder="Search contacts and groups">
           </div>
           <div class="sticky-mbl" v-if="tab === ''">
             <!-- if search bar type -->
@@ -101,10 +101,17 @@ export default {
     }
   },
   created () {
+    this.checkAuthStatus()
     this.getContactsList()
     this.getContactsGroupsList()
   },
   methods: {
+    checkAuthStatus () {
+      if (!auth.getAuthStatus) {
+        var url = '\login'
+        this.$router.redirect(url)
+      }
+    },
     filterContacts () {
       this.tab = ''
       this.resultList = []
@@ -227,7 +234,7 @@ export default {
   border-bottom: 1px solid rgba(0,0,0,0.2);
   background-color: transparent;
   margin: 1.5em 0em;
-  width: 40%;
+  width: 70%;
   outline: none;
   box-shadow: none;
 }

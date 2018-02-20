@@ -2,14 +2,21 @@
   <div>
     <div class="full-block-table">
       <div class="row contact-head hidden-xs">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <b>Name</b>
+          <input type="text" class="table-search-bar" v-model="searchKey.name" v-on:keyup="filterMe('name')" placeholder="Search">
         </div>
         <div class="col-md-3">
-          <b>Mobile Number</b>
+          <b>Mobile Number <span class="fa fa-long-arrow-alt-up"></span></b> <br>
+          <input type="text" class="table-search-bar" v-model="searchKey.mobile" placeholder="Search" v-on:keyup="filterMe('mobile')">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <b>Email Address</b>
+          <input type="text" class="table-search-bar" v-model="searchKey.email" placeholder="Search" v-on:keyup="filterMe('email')">
+        </div>
+        <div class="col-md-3">
+          <b>Status</b>
+          <input type="text" class="table-search-bar" v-model="searchKey.status" placeholder="Search" v-on:keyup="filterMe('status')">
         </div>
         <div class="col-md-1">
         </div>
@@ -24,7 +31,7 @@
       </div>
       <div class="contacts-list">
         <div class="row contact-item" v-if="pageinList" v-for="item in pageinList" :key="item.name">
-          <div class="col-md-4 c-name" @click.prevent="openFullView(item)">
+          <div class="col-md-3 c-name" @click.prevent="openFullView(item)">
             {{item.name}}
           </div>
           <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
@@ -33,10 +40,14 @@
           <div class="col-md-3 c-number" @click.prevent="openFullView(item)">
             {{item.email}}
           </div>
+          <div class="col-md-2 c-number" @click.prevent="openFullView(item)">
+            <p v-if="item.status === '1'">Active</p>
+            <p class="red" v-if="item.status === '0'">InActive</p>
+          </div>
           <div class="col-md-1 text-right">
             <ul class="list-inline float-right">
               <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
-              <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
+              <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash red"></span></a></li>
             </ul>
           </div>
         </div>
@@ -71,8 +82,7 @@
         </div>
       </div>
     </div>
-      <br><br><br><br>
-      <br><br><br><br>
+      <br>
     <!-- contact dialog -->
     <el-dialog
       title=""
@@ -81,13 +91,13 @@
       <manage-contact :form-title="formTitle" :contact-data="contactData" :role="role" @contactInfoChanged="contactInfoChanged" :contacts-groups-list="contactsGroupsList"></manage-contact>
     </el-dialog>
     <el-dialog
-      title=""
+      title="Contact Info"
       :visible.sync="fullViewVisible"
       width="30%">
       <div class="text-right">
         <ul class="list-inline">
           <li><a @click.prevent="openDialog('edit', contactData)"><span class="fa fa-pencil"></span></a></li>
-          <li><a @click.prevent="openDialog('delete', contactData)"><span class="fa fa-trash"></span></a></li>
+          <li><a @click.prevent="openDialog('delete', contactData)"><span class="fa fa-trash red"></span></a></li>
         </ul>
       </div>
       <div class="contact-pop-info">
@@ -95,6 +105,7 @@
         <p><span class="nm">Mobile Number:</span><br><b>{{ contactData.mobile }}</b></p>
         <p><span class="nm">Email Address:</span> <br><b>{{ contactData.email }}</b></p>
         <p v-for="item in contactsGroupsList" :key="item.id" v-if="contactData.group_id === item.id"><span class="nm">Group: </span><br><b>{{ item.name }}</b></p>
+        <p><span class="nm">Status:</span> <br><b v-if="contactData.status === '1'">Active</b><b class="red" v-if="contactData.status === '0'">InActive</b></p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
@@ -106,6 +117,7 @@
 <script>
 import {constants} from '@/constants.js'
 import axios from 'axios'
+import auth from '@/services/authService'
 import ManageContact from '@/components/contacts/ManageContact'
 export default {
   components: {
@@ -120,18 +132,20 @@ export default {
       contactData: {},
       formTitle: '',
       role: '',
-      userId: '102',
+      userId: auth.getUserId(),
       paginData: {
         perPage: 5,
         total: 0,
         pages: 0,
         pageNum: 1
       },
-      perPage: 5,
-      total: '',
-      pages: 10,
-      pageNum: 1,
-      pageinList: []
+      pageinList: [],
+      searchKey: {
+        name: '',
+        mobile: '',
+        email: '',
+        status: ''
+      }
     }
   },
   created () {
@@ -158,6 +172,7 @@ export default {
         this.contactData.mobile = data.mobile
         this.contactData.email = data.email
         this.contactData.group_id = data.group_id
+        this.contactData.status = data.status
         this.contactData.u_id = this.userId
       }
       if (event === 'add') {
@@ -167,6 +182,7 @@ export default {
         // change the formTitle
         this.formTitle = 'Add Contact'
         this.contactData.u_id = this.userId
+        this.contactData.status = 1
       }
       if (event === 'delete') {
         this.contactData.id = data.id
@@ -260,13 +276,28 @@ export default {
           this.pageinList.push(datalist[j])
         }
       }
+    },
+    filterMe (value) {
+      this.createPagin(this.filter(this.contactsList, value, this.searchKey[value]))
+    },
+    filter (datalist, searchKey, searchValue) {
+      let result = []
+      var len = datalist.length
+      if (len > 0) {
+        for (var i = 0; i < len; i++) {
+          if (datalist[i][searchKey].toLowerCase().indexOf(searchValue) >= 0) {
+            result.push(datalist[i])
+          }
+        }
+        return result
+      }
     }
   }
 }
 </script>
 <style scoped>
   .contact-head {
-    background-color: blue;
+    background-color: #3dae2b;
     margin:0;
     padding: 1em;
   }

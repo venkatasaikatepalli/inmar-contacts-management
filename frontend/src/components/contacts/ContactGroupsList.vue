@@ -34,12 +34,13 @@
               {{item.name}}
             </div>
             <div class="col-md-5 c-number" @click.prevent="openFullView(item)">
-              {{item.status}}
+              <p v-if="item.status === '1'">Active</p>
+              <p class="red" v-if="item.status === '0'">InActive</p>
             </div>
             <div class="col-md-1 text-right">
               <ul class="list-inline">
                 <li><a @click.prevent="openDialog('edit', item)"><span class="fa fa-pencil"></span></a></li>
-                <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash"></span></a></li>
+                <li><a @click.prevent="openDialog('delete', item)"><span class="fa fa-trash red"></span></a></li>
               </ul>
             </div>
           </div>
@@ -90,6 +91,7 @@
 <script>
 import {constants} from '@/constants.js'
 import axios from 'axios'
+import auth from '@/services/authService'
 import ManageGroup from '@/components/contacts/ManageGroup'
 import ContactsList from '@/components/contacts/ContactsList'
 export default {
@@ -107,7 +109,7 @@ export default {
       formTitle: '',
       viewRole: 'groups',
       role: '',
-      userId: '102',
+      userId: auth.getUserId(),
       resultList: [],
       paginData: {
         perPage: 5,
@@ -149,6 +151,7 @@ export default {
         // change the formTitle
         this.formTitle = 'Add Contacts Group'
         this.contactsGroupsData.u_id = this.userId
+        this.contactsGroupsData.status = 1
       }
       if (event === 'delete') {
         this.contactsGroupsData.id = data.id
@@ -264,7 +267,7 @@ export default {
 </script>
 <style scoped>
   .contact-head {
-    background-color: blue;
+    background-color: #3dae2b;
     margin:0;
     padding: 1em;
   }
