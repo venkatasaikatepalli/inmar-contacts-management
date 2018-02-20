@@ -204,15 +204,16 @@ export default {
     createPagin (datalist) {
       let len = datalist.length
       this.paginData.total = len
-
+      this.paginData.pageNum = 1
       if (len < this.paginData.perPage) {
         this.paginData.pages = 1
-        this.datalist = this.contactsList
+        this.paginate(datalist)
       } else {
         if (len % this.paginData.perPage > 0) {
           this.paginData.pages = parseInt(len / this.paginData.perPage) + 1
+          // this.paginData.pages = len / this.paginData.perPage
         } else {
-          this.paginData.pages = len / this.perPage
+          this.paginData.pages = len / this.paginData.perPage
         }
         if (this.paginData.total > 0) {
           this.paginate(datalist)
@@ -220,7 +221,7 @@ export default {
       }
     },
     nextPage () {
-      if (this.paginData.pageNum <= this.paginData.pages) {
+      if (this.paginData.pageNum < this.paginData.pages) {
         this.paginData.pageNum += 1
         this.paginate(this.contactsList)
       }
@@ -241,8 +242,8 @@ export default {
           this.pageinList.push(datalist[i])
         }
       } else {
-        for (var j = start; j < len; j++) {
-          this.pageinList.push(datalist[i])
+        for (var j = start; j < this.paginData.total; j++) {
+          this.pageinList.push(datalist[j])
         }
       }
     }
