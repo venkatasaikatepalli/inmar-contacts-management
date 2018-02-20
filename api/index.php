@@ -169,7 +169,7 @@ $app->post('/manage_contact', function($request){
    if ($input['id']) {
      # code...
     $id=$input['id'];
-   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile', `status`=$status, `email`='$email',`group_id`=$group_id WHERE id=$id";
+   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile', `status`='$status', `email`='$email',`group_id`=$group_id WHERE id=$id";
    try {
      $db = getDB();
      if($stmt = $db->query($sql)==true)
@@ -186,7 +186,7 @@ $app->post('/manage_contact', function($request){
    } else {
     // else add new
     $u_id = $input['u_id'];
-    $sql = "INSERT INTO `contacts`(`name`, `mobile`, `email`, `group_id`, `user_id`, `status`) VALUES ('$name','$mobile', '$email', '$group_id', $u_id, $status)";
+    $sql = "INSERT INTO `contacts`(`name`, `mobile`, `email`, `group_id`, `user_id`, `status`) VALUES ('$name','$mobile', '$email', '$group_id', $u_id, '$status')";
     try {
       $db = getDB();
       if($stmt = $db->query($sql)==true)

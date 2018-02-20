@@ -16,8 +16,8 @@
     <div class="form-group">
       <label for="">Status</label>
       <select name="" id="" v-model="contactData.status">
-        <option value="1">Active</option>
-        <option value="0">Inactive</option>
+        <option value="Active">Active</option>
+        <option value="InActive">Inactive</option>
       </select>
     </div>
     <div class="form-group">

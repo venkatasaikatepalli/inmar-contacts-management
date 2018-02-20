@@ -22,6 +22,8 @@
         </div>
         <div class="col-md-3">
           <b>Status</b>
+          <span v-if="sortkey.status === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('status')"></span>
+          <span v-if="sortkey.status === ''" class="fa fa-sort-down f-right" @click.prevent="sort('status')"></span><br>
           <input type="text" class="table-search-bar" v-model="searchKey.status" placeholder="Search" v-on:keyup="filterMe('status')">
         </div>
         <div class="col-md-1">
@@ -47,8 +49,8 @@
             {{item.email}}
           </div>
           <div class="col-md-2 c-number" @click.prevent="openFullView(item)">
-            <p v-if="item.status === '1'">Active</p>
-            <p class="red" v-if="item.status === '0'">InActive</p>
+            <p v-if="item.status === 'Active'">Active</p>
+            <p class="red" v-if="item.status === 'InActive'">InActive</p>
           </div>
           <div class="col-md-1 text-right">
             <ul class="list-inline float-right">
@@ -111,7 +113,7 @@
         <p><span class="nm">Mobile Number:</span><br><b>{{ contactData.mobile }}</b></p>
         <p><span class="nm">Email Address:</span> <br><b>{{ contactData.email }}</b></p>
         <p v-for="item in contactsGroupsList" :key="item.id" v-if="contactData.group_id === item.id"><span class="nm">Group: </span><br><b>{{ item.name }}</b></p>
-        <p><span class="nm">Status:</span> <br><b v-if="contactData.status === '1'">Active</b><b class="red" v-if="contactData.status === '0'">InActive</b></p>
+        <p><span class="nm">Status:</span> <br><b v-if="contactData.status === 'Active'">Active</b><b class="red" v-if="contactData.status === 'InActive'">InActive</b></p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="mini" type="danger" @click="fullViewVisible = false">Close</el-button>
@@ -308,8 +310,8 @@ export default {
       this.sortkey[value] = 'yes'
       this.createPagin(this.sortByKey(this.contactsList, value))
     },
-    sortByKey(array, key) {
-      return array.sort(function(a, b) {
+    sortByKey (array, key) {
+      return array.sort(function (a, b) {
         var x = a[key]; var y = b[key]
         return ((x < y) ? -1 : ((x > y) ? 1 : 0))
       })
