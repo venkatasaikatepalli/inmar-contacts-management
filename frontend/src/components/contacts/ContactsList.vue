@@ -3,15 +3,21 @@
     <div class="full-block-table">
       <div class="row contact-head hidden-xs">
         <div class="col-md-3">
-          <b>Name</b>
+          <b>Name </b>
+          <span v-if="sortkey.name === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('name')"></span>
+          <span v-if="sortkey.name === ''" class="fa fa-sort-down f-right" @click.prevent="sort('name')"></span>
           <input type="text" class="table-search-bar" v-model="searchKey.name" v-on:keyup="filterMe('name')" placeholder="Search">
         </div>
         <div class="col-md-3">
-          <b>Mobile Number <span class="fa fa-long-arrow-alt-up"></span></b> <br>
+          <b>Mobile Number </b>
+          <span v-if="sortkey.mobile === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('mobile')"></span>
+          <span v-if="sortkey.mobile === ''" class="fa fa-sort-down f-right" @click.prevent="sort('mobile')"></span> <br>
           <input type="text" class="table-search-bar" v-model="searchKey.mobile" placeholder="Search" v-on:keyup="filterMe('mobile')">
         </div>
         <div class="col-md-3">
           <b>Email Address</b>
+          <span v-if="sortkey.email === 'yes'" class="fa fa-sort-up f-right" @click.prevent="sort('email')"></span>
+          <span v-if="sortkey.email === ''" class="fa fa-sort-down f-right" @click.prevent="sort('email')"></span><br>
           <input type="text" class="table-search-bar" v-model="searchKey.email" placeholder="Search" v-on:keyup="filterMe('email')">
         </div>
         <div class="col-md-3">
@@ -141,6 +147,12 @@ export default {
       },
       pageinList: [],
       searchKey: {
+        name: '',
+        mobile: '',
+        email: '',
+        status: ''
+      },
+      sortkey: {
         name: '',
         mobile: '',
         email: '',
@@ -291,6 +303,16 @@ export default {
         }
         return result
       }
+    },
+    sort (value) {
+      this.sortkey[value] = 'yes'
+      this.createPagin(this.sortByKey(this.contactsList, value))
+    },
+    sortByKey(array, key) {
+      return array.sort(function(a, b) {
+        var x = a[key]; var y = b[key]
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0))
+      })
     }
   }
 }

@@ -72,7 +72,7 @@ function login($request,$response){
       $users = $users[0];
       $data = array(
         'status' => 'success', 
-        'token' => 'token', 
+        'token' => generatetoken($email), 
         'userDetails' => $users
         );
     } else {
@@ -321,12 +321,7 @@ $app->post('/users', function (Request $request, Response $response) {
     $contests = $stmt->fetchAll(PDO::FETCH_OBJ);
     $db = null;
 
-    $key = 'codejunkers';
-    $id = 10;
-    $key2="";
-    $signature = hash_hmac('SHA256',"$key,$id",$key2);
-
-    $data = array('token' => $signature ,'contests' => $contests );
+    $data = array('contests' => $contests );
     echo json_encode($data);
   } catch(PDOException $e) {
   //     //error_log($e->getMessage(), 3, '/var/tmp/php.log');
@@ -352,8 +347,7 @@ function getGroups ($u_id) {
 
 
 function generatetoken($id){
-	$key = 'codejunkers';
-	$id = 10;
+	$key = 'inmar';
 	$key2="";
 	$token = hash_hmac('SHA256',"$key,$id",$key2);
 return $token;

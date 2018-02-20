@@ -103,6 +103,14 @@ p{
 .fa-pencil{
 	color: orange;
 }
+.fa-long-arrow-alt-up {
+	color: grey;
+	cursor: pointer;
+}
+.fa-long-arrow-alt-down {
+	color: orange;
+	cursor: pointer;
+}
 /*headings*/
 .sub-head {
 	/*font-weight: bold;*/
@@ -153,7 +161,7 @@ p{
 	border:none;
 	border-bottom: 1px solid orange;
 	outline: none;
-	font-weight: 0.8em;
+	font-weight: 0.8em;	
 }
 
 
