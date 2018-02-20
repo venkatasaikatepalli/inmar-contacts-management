@@ -52,14 +52,21 @@ $app->post('/login',function($request,$response){
   try {
     $db = getDB();
     $stmt = $db->query($sql);  
-    $users = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $db = null;
-    $users = $users[0];
-    $data = array(
-      'status' => 'success', 
-      'token' => 'token', 
-      'userDetails' => $users
-      );
+    if ($users = $stmt->fetchAll(PDO::FETCH_OBJ)) {
+      # code...
+      $db = null;
+      $users = $users[0];
+      $data = array(
+        'status' => 'success', 
+        'token' => 'token', 
+        'userDetails' => $users
+        );
+    } else {
+      $data = array(
+        'status' => 'failed', 
+        'message' => 'Invalid Login Details'
+        );
+    }
     echo json_encode($data);
   } catch(PDOException $e) {
     echo '{"error":{"text":'. $e->getMessage() .'}}'; 
