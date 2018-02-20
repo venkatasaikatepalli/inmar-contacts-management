@@ -4,7 +4,7 @@
       <div class="container-fluid visible-xs">
         <div class="row flx">
           <div class="col-xs-9 no-pad mobile-header">
-            <a class="" href="#"><img src="./assets/header-logo.svg" height="40px" alt=""></a>
+            <a class="" href="#"><img src="./assets/header-logo.svg" height="60px" alt=""></a>
           </div>
           <div class="col-xs-3 flx-cend">
             <el-button type="text btn-menu" @click.prevent="changeNav"><span class="fa fa-bars"></span></el-button>

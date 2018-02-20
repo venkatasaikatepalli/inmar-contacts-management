@@ -96,6 +96,9 @@ p{
 .bg-blue {
 	background-color: #0071ce;
 }
+.bg-white {
+	/*background-color: white;*/
+}
 .bg-grey {
 	/*background-color: #E7E5DF;*/
 	background-color: #FAFAF9;
@@ -110,6 +113,10 @@ p{
 .fa-long-arrow-alt-down {
 	color: orange;
 	cursor: pointer;
+}
+.btn {
+	border-radius: 0px;
+	font-weight: bold;
 }
 /*headings*/
 .sub-head {

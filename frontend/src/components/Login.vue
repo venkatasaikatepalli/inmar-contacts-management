@@ -15,13 +15,10 @@
                 <label for="exampleDropdownFormPassword1">Password</label>
                 <input type="password" class="form-control" v-model="formData.password" placeholder="Password">
               </div>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                <label class="form-check-label" for="dropdownCheck">
-                  Remember me
-                </label>
+              <br>
+              <div class="text-center">
+                <button type="submit" @click.prevent="login()" class="btn btn-primary">Sign in</button>
               </div>
-              <button type="submit" @click.prevent="login()" class="btn btn-primary">Sign in</button>
             </form>
           </div>
         </div>
