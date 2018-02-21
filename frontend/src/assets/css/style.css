@@ -172,7 +172,7 @@ p{
 	}
 	body {
 		font-size: 1em;
-		padding-top: 1.5em;
+		padding-top: 1em;
 	}
 	/*signup*/
 	.signup-img-block {
@@ -235,6 +235,14 @@ p{
 		width: 100%;
 		text-align: center;
 		color: white!important;
+	}
+	.dashboard-search-bar {
+		width: 100%;
+		font-size: 1.3em;
+	}
+	.dashboard .min-50 {
+		height: 30vh;
+		padding: 0.7em;
 	}
 	
 }

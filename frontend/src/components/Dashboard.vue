@@ -31,16 +31,21 @@
           </div>
         </div>
         <div class="row bg-white min-60">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="stat text-center">
               <h2>{{response.conatactslist[0].contacts}}</h2>
               <h3><span class="fa fa-address-book"></span> Total Contacts</h3>
             </div>
           </div>
-          <div class="col-md-3 text-center">
+          <div class="col-md-4 text-center">
             <div class="stat">
               <h2>{{response.groups.contactgroups}}</h2>
               <h3><span class="fa fa-users"></span> Total Groups</h3>
+            </div>
+          </div>
+          <div class="col-md-4 text-center">
+            <div class="stat" style="padding-top:3em;">
+              <button class="btn btn-success" @click.prevent="open('contacts')">View More Contacts <span class="fa fa-long-arrow-right"></span></button>
             </div>
           </div>
         </div>
@@ -202,6 +207,9 @@ export default {
             this.response = resp.data
           }
         })
+    },
+    open (value) {
+      this.$router.push(value)
     }
   }
 }
