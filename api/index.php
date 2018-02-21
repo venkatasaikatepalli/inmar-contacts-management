@@ -170,7 +170,8 @@ $app->post('/manage_contact', function($request){
    if ($input['id']) {
      # code...
     $id=$input['id'];
-   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile', `status`='$status', `email`='$email',`group_id`=$group_id WHERE id=$id";
+   // $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile', `status`='$status', `email`='$email',`group_id`=$group_id WHERE id=$id";
+   $sql = "UPDATE `contacts` SET `name`='$name',`mobile`='$mobile',`email`='$email',`status`='$status',`group_id`=$group_id WHERE id=$id";
    try {
      $db = getDB();
      if($stmt = $db->query($sql)==true)

@@ -1,11 +1,20 @@
 # inmar-contacts-management
 Employees contact's information App for Inmar
 
+#Live Demo
+
+Frontend Amazon S3 Url: [http://contacts.inmar.s3-website.ap-south-1.amazonaws.com](http://contacts.inmar.s3-website.ap-south-1.amazonaws.com)
+
+Backend Api Url: [https://api.codejunkers.xyz/](https://api.codejunkers.xyz/index.php/) 
+
+
+
+
 # FrontEnd Usage
 
 > It is developed in Vuejs Framework
 
-## Build Setup
+# Build Setup
 
 ``` bash
 # install dependencies
@@ -32,11 +41,13 @@ npm test
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+
+
 #Backend Setup
 
 > It is developed in slim Framework
 
-## Api Setup
+# Api Setup
 
 ``` bash
 #Api source
